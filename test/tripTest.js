@@ -37,6 +37,19 @@ describe('trips', () => {
         done();
       });
   });
+  it('should not get any trips', (done) => {
+    chai.request(app)
+      .get('/api/v1/trips')
+      .set({
+        'token': token,
+      })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
   it('should create a trip', (done) => {
     chai.request(app)
       .post('/api/v1/trips')
@@ -262,4 +275,17 @@ describe('trips', () => {
         done();
       });
   });
+  it('should get all trips', (done) => {
+    chai.request(app)
+      .get('/api/v1/trips')
+      .set({
+        'token': token,
+      })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('data');
+        done();
+      });
   });
+});

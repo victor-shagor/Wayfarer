@@ -18,6 +18,17 @@ const trip = {
         });
       });
   },
+  getTrips(req, res) {
+    pool.query('SELECT * FROM trips', (error, results) => {
+      if (error) {
+        throw error;
+      }
+      return res.status(200).send({
+        status: 'success',
+        data: results.rows,
+      });
+    });
+  },
 };
 export default trip;
  
