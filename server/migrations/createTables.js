@@ -2,7 +2,7 @@ import pool from '../config';
 
 const createTables = `
   CREATE TABLE IF NOT EXISTS users (
-   ID SERIAL PRIMARY KEY,
+   user_id SERIAL PRIMARY KEY,
    email VARCHAR,
    first_name VARCHAR(20),
    last_name VARCHAR(20),

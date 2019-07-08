@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+  - "stable"
+
+services:
+  - postgresql
+
+cache:
+  directories:
+    - "node_modules"
+
+
+env:
+  global:
+    - CC_TEST_REPORTER_ID=adb26c919576b5a5d91342c5f5f179fec43c6a2e976ef68df623922227e9bc20
+before_script:
+  - psql -c 'create database wayFarer_test;' -U postgres
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+script:
+  - npm run test
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - npm run coverall
