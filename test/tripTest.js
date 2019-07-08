@@ -288,4 +288,116 @@ describe('trips', () => {
         done();
       });
   });
+  it('should book a trip', (done) => {
+    chai.request(app)
+      .post('/api/v1/bookings')
+      .set({
+        'token': token,
+      })
+      .send({
+        trip_id: '1', seat_number: '1',
+      })
+      .end((err, res) => {
+        res.should.have.status(201);
+        res.body.should.be.a('object');
+        res.body.should.have.property('data');
+        done();
+      });
+  });
+  it('should not book a trip twice', (done) => {
+    chai.request(app)
+      .post('/api/v1/bookings')
+      .set({
+        'token': token,
+      })
+      .send({
+        trip_id: '1', seat_number: '1',
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
+  it('should not book a trip with allocated seat', (done) => {
+    chai.request(app)
+      .post('/api/v1/bookings')
+      .set({
+        'token': token1,
+      })
+      .send({
+        trip_id: '1', seat_number: '1',
+      })
+      .end((err, res) => {
+        res.should.have.status(409);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
+  it('should not book a trip without seat number', (done) => {
+    chai.request(app)
+      .post('/api/v1/bookings')
+      .set({
+        'token': token,
+      })
+      .send({
+        trip_id: '1', seat_number: '',
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
+  it('should not book a trip without trip id', (done) => {
+    chai.request(app)
+      .post('/api/v1/bookings')
+      .set({
+        'token': token,
+      })
+      .send({
+        trip_id: '', seat_number: '2',
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
+  it('should not book a trip without a correct trip id', (done) => {
+    chai.request(app)
+      .post('/api/v1/bookings')
+      .set({
+        'token': token,
+      })
+      .send({
+        trip_id: '30', seat_number: '3',
+      })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
+  it('should not book a trip if trip id is not a number', (done) => {
+    chai.request(app)
+      .post('/api/v1/bookings')
+      .set({
+        'token': token,
+      })
+      .send({
+        trip_id: 're', seat_number: '4',
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
 });

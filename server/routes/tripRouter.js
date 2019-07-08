@@ -7,13 +7,14 @@ import Auth from '../middleware/auth';
 
 const tripRouter = express.Router();
 
-const { verifyTrip, verifyGet } = validate;
-const {create, getTrips } = trip;
+const { verifyTrip, verifyGet, verifyBook } = validate;
+const {create, getTrips, book } = trip;
 const { verifyAdmin, verifyToken } = Auth;
 
 
 tripRouter.route('/api/v1/trips').post(verifyAdmin, verifyTrip, create);
 tripRouter.route('/api/v1/trips').get(verifyToken, verifyGet, getTrips);
+tripRouter.route('/api/v1/bookings').post(verifyToken, verifyBook, book);
 
 
 export default tripRouter;
