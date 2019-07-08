@@ -84,5 +84,68 @@ const validate = {
       return next();
     });
   },
+  verifyTrip(req, res, next) {
+    const {
+      bus_id, trip_date, fare, origin, destination,
+    } = req.body;
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+
+    const requiredFields = ['bus_id', 'origin', 'destination', 'trip_date', 'fare'];
+    const missingFields = [];
+    requiredFields.forEach((fields) => {
+      if (req.body[fields] === undefined) {
+        missingFields.push(fields);
+      }
+    });
+    if (missingFields.length !== 0) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'The following field(s) is/are required',
+        fields: missingFields,
+      });
+    }
+    if (!validator.isAlphanumeric(origin) || !validator.isAlphanumeric(destination)) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'origin/destination cannot be empty',
+      });
+    }
+    if (!/^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/.test(trip_date) || validator.isEmpty(trip_date)) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'Trip_date can only be a date in MM/DD/YYYY format',
+      });
+    }
+    if (!validator.isFloat(fare) || !Helper.isValidNumber(bus_id) || fare < 1) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'Bus id and fare can only be a number',
+      });
+    }
+    if (new Date(trip_date) < date) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'Trip_date cannot be lesser than the present date',
+      });
+    }
+    pool.query('SELECT id FROM bus WHERE id = $1', [bus_id], (error, results) => {
+      if (!results.rows[0]) {
+        return res.status(404).send({
+          status: 'error',
+          error: `Bus with id:${bus_id} not found`,
+        });
+      }
+      pool.query('SELECT bus_id FROM trips WHERE bus_id = $1', [bus_id], (err, result) => {
+        if (result.rows[0]) {
+          return res.status(409).send({
+            status: 'error',
+            error: `Bus with id:${bus_id} already assigned to a trip`,
+          });
+        }
+        return next();
+      });
+    });
+  },
 };
 export default validate;
