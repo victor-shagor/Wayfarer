@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 
 import userRouter from './server/routes/userRouter';
+import tripRouter from './server/routes/tripRouter';
 
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use('/', userRouter);
+app.use('/', tripRouter);
 app.get('/', (req, res) => res.status(200).send({ message: 'Welcome to Wayfarer' }));
 app.use('*', (req, res) => res.send({ message: 'route not found' }));
 
