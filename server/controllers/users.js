@@ -26,5 +26,29 @@ const User = {
       });
     });
   },
+  signin(req, res) {
+    const { email } = req.body;
+    pool.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
+      if (error) {
+        throw error;
+      }
+      const {
+        user_id, is_admin, first_name, last_name,
+      } = results.rows[0];
+      const token = Helper.generateToken(user_id, email, is_admin);
+      const data = {
+        user_id,
+        is_admin,
+        token,
+        email,
+        first_name,
+        last_name,
+      };
+      res.status(200).send({
+        status: 200,
+        data,
+      });
+    });
+  },
 };
 export default User;
