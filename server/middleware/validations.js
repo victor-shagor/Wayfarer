@@ -147,5 +147,16 @@ const validate = {
       });
     });
   },
+  verifyGet(req, res, next) {
+    pool.query('SELECT * FROM trips', (err, results) => {
+      if (!results.rows[0]) {
+        return res.status(404).send({
+          status: 'error',
+          error: 'No trip Available',
+        });
+      }
+      return next();
+    });
+  },
 };
 export default validate;
