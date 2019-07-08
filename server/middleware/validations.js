@@ -158,5 +158,64 @@ const validate = {
       return next();
     });
   },
+  verifyBook(req, res, next) {
+    const decoded = jwt.decode(req.headers['token'], { complete: true });
+    const seat = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+    const { trip_id, seat_number } = req.body;
+    if (!trip_id || !Helper.isValidNumber(trip_id)) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'trip_id can only be a number',
+      });
+    }
+    if (!seat_number || seat_number > 20 || !Helper.isValidNumber(seat_number)) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'seat_number can only be a number and cannot be more than 20',
+      });
+    }
+    pool.query('SELECT trip_id, status FROM trips WHERE trip_id =$1', [trip_id], (err, results) => {
+      if (!results.rows[0] || results.rows[0].status !== 'active') {
+        return res.status(404).send({
+          status: 'error',
+          error: 'Trip not found/Active',
+        });
+      }
+      pool.query('SELECT * FROM bookings WHERE user_id =$1', [decoded.payload.user_id], (error, result) => {
+        let test;
+        result.rows.forEach((trips) => {
+          if (trips.trip_id === parseInt(trip_id)) {
+            test = false;
+          }
+        });
+        if (test === false) {
+          return res.status(400).send({
+            status: 'error',
+            error: 'Trip already booked by you',
+          });
+        }
+        pool.query('SELECT seat_number FROM bookings where trip_id =$1', [trip_id], (errr, resul) => {
+          let testing;
+          resul.rows.forEach((seats) => {
+            for (let i = 0; i < seat.length; i++) {
+              if (seat[i] === seats.seat_number) {
+                seat.splice(i, 1);
+              }
+            }
+            if (parseInt(seat_number) === seats.seat_number) {
+              testing = false;
+            }
+          });
+          if (testing === false) {
+            return res.status(409).send({
+              status: 'error',
+              error: `Seat taken, seats available are ${seat}`,
+            });
+          }
+          next();
+        });
+      });
+    });
+  },
 };
 export default validate;
