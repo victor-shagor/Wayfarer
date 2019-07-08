@@ -53,6 +53,20 @@ const trip = {
       });
     });
   },
+  getBookings(req, res) {
+    const decoded = jwt.decode(req.headers['token'], { complete: true });
+    if (decoded.payload.is_admin === true) {
+      pool.query('SELECT * FROM bookings', (error, results) => res.status(200).send({
+        status: 'success',
+        data: results.rows,
+      }));
+    } else {
+      pool.query('SELECT * FROM bookings WHERE user_id =$1', [decoded.payload.user_id], (error, results) => res.status(200).send({
+        status: 'success',
+        data: results.rows,
+      }));
+    }
+  },
 };
 export default trip;
  
