@@ -413,4 +413,43 @@ describe('trips', () => {
         done();
       });
   });
+  it('should delete bookings', (done) => {
+    chai.request(app)
+      .delete('/api/v1/bookings/1')
+      .set({
+        'token': token,
+      })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('message');
+        done();
+      });
+  });
+  it('should not delete bookings with wrong params', (done) => {
+    chai.request(app)
+      .delete('/api/v1/bookings/50')
+      .set({
+        'token': token,
+      })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
+  it('should not delete bookings if params is not a number', (done) => {
+    chai.request(app)
+      .delete('/api/v1/bookings/1b')
+      .set({
+        'token': token,
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
 });
