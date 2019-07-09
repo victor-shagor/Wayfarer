@@ -77,6 +77,17 @@ const trip = {
       });
     });
   },
+  cancelTrip(req, res) {
+    const id = parseInt(req.params.tripId);
+    pool.query('UPDATE trips SET status = $1 WHERE trip_id = $2', ['cancelled', id], () => {
+      pool.query('UPDATE bookings SET status = $1 WHERE trip_id = $2', ['cancelled', id], () => {
+        res.status(200).send({
+          status: 200,
+          message: 'Trip cancelled successfully',
+        });
+      });
+    });
+  },
 };
 export default trip;
  

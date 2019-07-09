@@ -13,7 +13,7 @@ app.use(cors());
 app.use('/', userRouter);
 app.use('/', tripRouter);
 app.get('/', (req, res) => res.status(200).send({ message: 'Welcome to Wayfarer' }));
-app.use('*', (req, res) => res.send({ message: 'route not found' }));
+app.use('*', (req, res) => res.status(404).send({ message: 'route not found' }));
 
 
 const port = process.env.PORT || 3000;
