@@ -236,5 +236,29 @@ const validate = {
       return next();
     });
   },
+  verifyCancel(req, res, next) {
+    const { tripId } = req.params;
+    if (!Helper.isValidNumber(tripId)) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'id can only be a number',
+      });
+    }
+    pool.query('SELECT trip_id, status FROM trips WHERE trip_id =$1', [tripId], (error, results) => {
+      if (!results.rows[0]) {
+        return res.status(404).send({
+          status: 'error',
+          error: 'Trip not found',
+        });
+      }
+      if (results.rows[0].status === 'cancelled') {
+        return res.status(409).send({
+          status: 'error',
+          error: 'Trip already cancelled',
+        });
+      }
+      return next();
+    });
+  },
 };
 export default validate;

@@ -452,4 +452,43 @@ describe('trips', () => {
         done();
       });
   });
+  it('should cancel trip', (done) => {
+   chai.request(app)
+     .patch('/api/v1/trips/1')
+     .set({
+       'token': token,
+     })
+     .end((err, res) => {
+       res.should.have.status(200);
+       res.body.should.be.a('object');
+       res.body.should.have.property('message');
+       done();
+     });
+ });
+ it('should not cancel trip with wrong params', (done) => {
+   chai.request(app)
+     .patch('/api/v1/trips/50')
+     .set({
+       'token': token,
+     })
+     .end((err, res) => {
+       res.should.have.status(404);
+       res.body.should.be.a('object');
+       res.body.should.have.property('error');
+       done();
+     });
+ });
+ it('should not cancel trips if params is not a number', (done) => {
+   chai.request(app)
+     .patch('/api/v1/trips/1b')
+     .set({
+       'token': token,
+     })
+     .end((err, res) => {
+       res.should.have.status(400);
+       res.body.should.be.a('object');
+       res.body.should.have.property('error');
+       done();
+     });
+ });
 });
