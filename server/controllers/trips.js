@@ -88,6 +88,32 @@ const trip = {
       });
     });
   },
+  getFilterTrips(req, res) {
+    const { origin } = req.body;
+    const { destination } = req.body;
+    if (origin) {
+      pool.query('SELECT * FROM trips WHERE origin =$1', [origin], (error, results) => {
+        if (error) {
+          throw error;
+        }
+        return res.status(200).send({
+          status: 'success',
+          data: results.rows,
+        });
+      });
+    }
+    if (destination) {
+      pool.query('SELECT * FROM trips WHERE destination =$1', [destination], (error, results) => {
+        if (error) {
+          throw error;
+        }
+        return res.status(200).send({
+          status: 'success',
+          data: results.rows,
+        });
+      });
+    }
+  },
 };
 export default trip;
  

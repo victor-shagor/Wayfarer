@@ -260,5 +260,43 @@ const validate = {
       return next();
     });
   },
+  verifyFilter(req, res, next) {
+    const { origin } = req.body;
+    const { destination } = req.body;
+    if (!origin && !destination) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'Either origin or destination is required to filter',
+      });
+    }
+    if (origin && destination) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'you can only filter with either origin or destination but not both',
+      });
+    }
+    if (origin) {
+      pool.query('SELECT * FROM trips WHERE origin =$1', [origin], (error, results) => {
+        if (!results.rows[0]) {
+          return res.status(404).send({
+            status: 'error',
+            error: `There no trips from ${origin}`,
+          });
+        }
+        next();
+      });
+    }
+    if (destination) {
+      pool.query('SELECT * FROM trips WHERE destination =$1', [destination], (error, result) => {
+        if (!result.rows[0]) {
+          return res.status(404).send({
+            status: 'error',
+            error: `There no trips going to ${destination}`,
+          });
+        }
+        next();
+      });
+    }
+  },
 };
 export default validate;

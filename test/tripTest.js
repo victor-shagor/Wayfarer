@@ -491,4 +491,60 @@ describe('trips', () => {
        done();
      });
  });
+ it('should filter trip with origin', (done) => {
+  chai.request(app)
+    .get('/api/v1/trips/filter')
+    .set({
+      'token': token,
+    })
+    .send({ origin: 'lagos' })
+    .end((err, res) => {
+      res.should.have.status(200);
+      res.body.should.be.a('object');
+      res.body.should.have.property('data');
+      done();
+    });
+});
+it('should not filter trip with without destination or origin', (done) => {
+  chai.request(app)
+    .get('/api/v1/trips/filter')
+    .set({
+      'token': token,
+    })
+    .send({ destination: '' })
+    .end((err, res) => {
+      res.should.have.status(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('error');
+      done();
+    });
+});
+it('should not filter trip with with destination and origin', (done) => {
+  chai.request(app)
+    .get('/api/v1/trips/filter')
+    .set({
+      'token': token,
+    })
+    .send({ destination: 'lagos', origin: 'alabama' })
+    .end((err, res) => {
+      res.should.have.status(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('error');
+      done();
+    });
+});
+it('should not filter trip with wrong destination or origin', (done) => {
+  chai.request(app)
+    .get('/api/v1/trips/filter')
+    .set({
+      'token': token,
+    })
+    .send({ destination: 'boston' })
+    .end((err, res) => {
+      res.should.have.status(404);
+      res.body.should.be.a('object');
+      res.body.should.have.property('error');
+      done();
+    });
+});
 });
