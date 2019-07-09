@@ -217,5 +217,24 @@ const validate = {
       });
     });
   },
+  verifyDel(req, res, next) {
+    const decoded = jwt.decode(req.headers['token'], { complete: true });
+    const { bookingId } = req.params;
+    if (!Helper.isValidNumber(bookingId)) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'id can only be a number',
+      });
+    }
+    pool.query('SELECT * FROM bookings WHERE user_id =$1 AND booking_id =$2', [decoded.payload.user_id, bookingId], (error, results) => {
+      if (!results.rows[0]) {
+        return res.status(404).send({
+          status: 'error',
+          error: 'booking not on your booking list',
+        });
+      }
+      return next();
+    });
+  },
 };
 export default validate;

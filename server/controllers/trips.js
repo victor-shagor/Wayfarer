@@ -67,6 +67,16 @@ const trip = {
       }));
     }
   },
+  deleteBookings(req, res) {
+    const id = parseInt(req.params.bookingId);
+    const decoded = jwt.decode(req.headers['token'], { complete: true });
+    pool.query('DELETE FROM bookings WHERE user_id =$1 AND booking_id =$2', [decoded.payload.user_id, id], () => {
+      res.status(200).send({
+        status: 'success',
+        message: 'Booking deleted successfully',
+      });
+    });
+  },
 };
 export default trip;
  
