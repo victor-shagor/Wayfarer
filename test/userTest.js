@@ -19,6 +19,25 @@ describe('users', () => {
           res.body.should.be.a('object');
           res.body.should.have.property('data');
           res.body.data.should.be.a('object');
+          res.body.data.should.have.property('first_name');
+          res.body.data.should.have.property('last_name');
+          res.body.data.should.have.property('user_id');
+          res.body.data.should.have.property('is_admin');
+          res.body.data.should.have.property('token');
+
+          done();
+        });
+    });
+    it('should not create a user without any of the required field ', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signup')
+        .send({
+          last_name: 'ojo', email: 'ojo@gmail.com', password: 'fggfdgfd123',
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error');
           done();
         });
     });
@@ -102,11 +121,24 @@ describe('users', () => {
           done();
         });
     });
-    it('should not create a user with a wrong password ', (done) => {
+    it('should not create a user with a correct name ', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          first_name: 'abiola', last_name: 'ojo', email: 'ojo@gmail.com', password: 'oladimej',
+          first_name: 'ab', last_name: 'ojo', email: 'ojo@gmail.com', password: 'oladimeji1',
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error');
+          done();
+        });
+    });
+    it('should not create a user if password does not contain a number ', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signup')
+        .send({
+          first_name: 'ab', last_name: 'ojo', email: 'ojo@gmail.com', password: 'oladimejiii',
         })
         .end((err, res) => {
           res.should.have.status(400);
@@ -125,6 +157,11 @@ describe('users', () => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('data');
+          res.body.data.should.have.property('first_name');
+          res.body.data.should.have.property('last_name');
+          res.body.data.should.have.property('user_id');
+          res.body.data.should.have.property('is_admin');
+          res.body.data.should.have.property('token');
           done();
         });
     });
@@ -132,7 +169,7 @@ describe('users', () => {
       chai.request(app)
         .post('/api/v1/auth/signin')
         .send({
-          email: 'd@gmail.com', password: 'adedoyin1',
+          email: 'dee@gmail.com', password: 'adedoyin1',
         })
         .end((err, res) => {
           res.should.have.status(400);
@@ -159,6 +196,19 @@ describe('users', () => {
         .post('/api/v1/auth/signin')
         .send({
           email: 'doyin@gmail.com', password: '',
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error');
+          done();
+        });
+    });
+    it('should not signin without required field ', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send({
+          password: 'oljfcjjdjncjn1',
         })
         .end((err, res) => {
           res.should.have.status(400);
