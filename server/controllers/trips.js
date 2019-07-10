@@ -34,7 +34,7 @@ const trip = {
       pool.query('SELECT * FROM users WHERE user_id =$1', [user_id], (errr, user) => {
         const { first_name, last_name, email } = user.rows[0];
 
-        pool.query('SELECT seat_number FROM bookings', (errr, seat) => {
+        pool.query('SELECT seat_number FROM bookings WHERE trip_id =$1', [trip_id], (errr, seat) => {
           const seat_number = seat.rows.length+1;
 
           pool.query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
