@@ -39,7 +39,9 @@
     "nyc": "^14.1.1"
   },
   "scripts": {
-    "start": "babel-node ./app.js",
+    "start:dev": "babel-node ./server/app.js",
+    "start": "node build/app.js",
+    "build": "babel server --out-dir build",
     "test": "cross-env NODE_ENV=test npm run drop && cross-env NODE_ENV=test npm run create && cross-env NODE_ENV=test npm run populate && cross-env NODE_ENV=test nyc --reporter=lcov mocha --require @babel/register test/* --timeout 10000 --exit",
     "coverall": "./node_modules/.bin/nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "create": "babel-node ./server/migrations/createTables.js",

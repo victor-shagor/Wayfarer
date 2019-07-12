@@ -1,12 +1,16 @@
 import bodyParser from 'body-parser';
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import cors from 'cors';
 
-import userRouter from './server/routes/userRouter';
-import tripRouter from './server/routes/tripRouter';
+import userRouter from './routes/userRouter';
+import tripRouter from './routes/tripRouter';
 
 
 const app = express();
+const swaggerDoc = YAML.load('./swagger.yaml');
+app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());

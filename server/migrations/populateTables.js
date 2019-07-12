@@ -12,6 +12,11 @@ INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY
 INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380C','Honda','DL360', 2016, 20);
 INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380D','Honda','DL360', 2016, 20);
 INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380E','Honda','DL360', 2016, 20);
+INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380A','Honda','DL360', 2016, 20);
+INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380B','Honda','DL360', 2016, 20);
+INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380C','Honda','DL360', 2016, 20);
+INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380D','Honda','DL360', 2016, 20);
+INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380E','Honda','DL360', 2016, 20);
 `;
 
 const seedDatabase = async () => {
