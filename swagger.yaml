@@ -1,0 +1,726 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Wayfarer
+  description: 'TODO: Add Description'
+  contact: {}
+host: wayfarer-victor.herokuapp.com
+basePath: /api/v1
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /auth/signin/:
+    post:
+      description: >-
+        sign in Route
+        Body Parameters needed are:
+        - email
+        - password
+      summary: sign in
+      tags:
+      - Misc
+      operationId: AuthSigninPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: password
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              data:
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzNzc3LCJleHAiOjE1NTg0NzUzNzd9.t8VZ-fJygbxNhrF3ADXlu4007n9WPP6ZEWlbjl96oS8
+                  id: 7
+                  first_name: adebayo
+                  last_name: ajayi
+                  email: ajayi@email.com
+                  password: User successfully created
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        400:
+          description: Conflict
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: error
+              error: Email/password is incorect
+  /auth/signup:
+    post:
+      description: >-
+        sign up Route
+        Body Parameters needed are:
+        - email
+        - password
+        - first_name
+        - last_name
+      summary: signup
+      tags:
+      - Misc
+      operationId: AuthSignupPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: last_name
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: password
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: first_name
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        201:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              data:
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzNzc3LCJleHAiOjE1NTg0NzUzNzd9.t8VZ-fJygbxNhrF3ADXlu4007n9WPP6ZEWlbjl96oS8
+                  id: 7
+                  first_name: adebayo
+                  last_name: ajayi
+                  email: ajayi@email.com
+                  password: User successfully created
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        409:
+          description: Conflict
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: error
+              error: Email has already being used
+  /trips:
+    post:
+      description: >-
+        trips Route
+        Body Parameters needed are:
+        - bus_id
+        - trip_date
+        - destination
+        - origin
+        - fare
+      summary: Create trip
+      tags:
+      - Misc
+      operationId: TripsPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: bus_id
+        in: formData
+        required: true
+        type: integer
+        description: ''
+      - name: trip_date
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: fare
+        in: formData
+        required: true
+        type: float
+        description: ''
+      - name: origin
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: destination
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        201:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              data:
+                  trip_id: 1 
+                  bus_id: 4
+                  origin: lagos
+                  destination: ibadan
+                  fare: 3000
+                  trip_date: 07/12/2019
+                  status: active
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        404:
+          description: not found
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: error
+              error: bus id not found
+    get:
+      description: 'TODO: Add Description'
+      summary: Get all trips
+      tags:
+      - Misc
+      operationId: TripsGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              data:
+                  trip_id: 1 
+                  bus_id: 4
+                  origin: lagos
+                  destination: ibadan
+                  fare: 3000
+                  trip_date: 07/12/2019
+                  status: active,
+
+                  trip_id: 1 
+                  bus_id: 4
+                  origin: lagos
+                  destination: ibadan
+                  fare: 3000
+                  trip_date: 07/12/2019
+                  status: active
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+  /bookings:
+    post:
+      description:  >-
+        bookings Route
+        Body Parameters needed are:
+        - trip_id
+      summary: Book a trip
+      tags:
+      - Misc
+      operationId: BookingsPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: trip_id
+        in: formData
+        required: true
+        type: integer
+        description: ''
+      responses:
+        201:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              data:
+                  booking_id: 1
+                  trip_id: 1 
+                  bus_id: 4
+                  origin: lagos
+                  seat_number: 4
+                  destination: ibadan
+                  fare: 3000
+                  trip_date: 07/12/2019
+                  status: active
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        409:
+          description: conflict
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: error
+              error: trip already booked by you
+    get:
+      description: 'TODO: Add Description'
+      summary: Get Bookings
+      tags:
+      - Misc
+      operationId: BookingsGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              data:
+                  booking_id: 1
+                  trip_id: 1 
+                  bus_id: 4
+                  origin: lagos
+                  seat_number: 4
+                  destination: ibadan
+                  fare: 3000
+                  trip_date: 07/12/2019
+                  status: active
+
+                  booking_id: 1
+                  trip_id: 1 
+                  bus_id: 4
+                  origin: lagos
+                  seat_number: 4
+                  destination: ibadan
+                  fare: 3000
+                  trip_date: 07/12/2019
+                  status: active
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+  /bookings/:id:
+    delete:
+      description: Pass in appropriate id as parameter
+      summary: Delete Bookings
+      tags:
+      - Misc
+      operationId: Bookings1Delete
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              message: Booking deleted successfully
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        404:
+          description: not found
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: error
+              error: booking with id:10 not found
+  /trips/:id:
+    patch:
+      description: Pass in appropriate id as parameter
+      summary: Cancel a Trip
+      tags:
+      - Misc
+      operationId: Trips1Patch
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              message: trip cancelled successfully
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        404:
+          description: not found
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: error
+              error: booking with id:10 not found
+  /trips/filter:
+    get:
+      description: >-
+        filter with either origin or destination
+        Body Parameters needed are:
+        - Origin or Destination
+      summary: Filter Trips
+      tags:
+      - Misc
+      operationId: TripsFilterGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: origin
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+    /bookings/seat:
+    post:
+      description: >-
+        bookings Route
+        Body Parameters needed are:
+        - trip_id
+        - seat_number
+      summary: specify seat number while booking a trip
+      tags:
+      - Misc
+      operationId: BookingsSeatPost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: trip_id
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: seat_number
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        201:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              data:
+                  booking_id: 1
+                  trip_id: 1 
+                  bus_id: 4
+                  origin: lagos
+                  seat_number: 4
+                  destination: ibadan
+                  fare: 3000
+                  trip_date: 07/12/2019
+                  status: active
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        409:
+          description: conflict
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: error
+              error: trip already booked by you
+tags:
+- name: Misc
+  description: ''
