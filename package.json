@@ -46,7 +46,9 @@
     "coverall": "./node_modules/.bin/nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "create": "babel-node ./server/migrations/createTables.js",
     "drop": "babel-node ./server/migrations/dropTables.js",
-    "populate": "babel-node ./server/migrations/populateTables.js"
+    "populate": "babel-node ./server/migrations/populateTables.js",
+    "heroku:create": "node build/migrations/createTables.js",
+    "heroku:populate": "node build/migrations/populateTables.js"
   },
   "author": "ABIOLA OJO",
   "license": "ISC"
