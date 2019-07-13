@@ -6,6 +6,61 @@ info:
   contact: {}
 host: wayfarer-victor.herokuapp.com
 basePath: /api/v1
+definitions:
+    userRequest:
+      example: 
+        status: error
+        error: email has already being used
+    userResponse:
+      example: 
+        status: success
+        data:
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzNzc3LCJleHAiOjE1NTg0NzUzNzd9.t8VZ-fJygbxNhrF3ADXlu4007n9WPP6ZEWlbjl96oS8
+          id: 7
+          first_name: adebayo
+          last_name: ajayi
+          email: ajayi@email.com
+          password: User successfully created
+    tripRequest:
+      example: 
+        status: error
+        error: bus id not found
+    tripResponse:
+      example: 
+        status: success
+        data:
+          trip_id: 1 
+          bus_id: 4
+          origin: lagos
+          destination: ibadan
+          fare: 3000
+          trip_date: 07/12/2019
+          status: active
+    bookRequest:
+      example: 
+        status: error
+        error: trip already booked by you
+    bookResponse:
+      example: 
+        status: success
+        data:
+          booking_id: 2
+          trip_id: 1 
+          bus_id: 4
+          user_id: 3
+          origin: lagos
+          destination: ibadan
+          fare: 3000
+          trip_date: 07/12/2019
+          status: active
+    deleteResponse:
+      example: 
+        status: success
+        message: booking successfully deleted
+    patchResponse:
+      example: 
+        status: success
+        message: trip successfully cancelled
 schemes:
 - https
 consumes:
@@ -32,9 +87,14 @@ paths:
       parameters:
       - name: token
         in: header
-        required: true
+        required: false
         type: string
         description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
       - name: email
         in: formData
         required: true
@@ -47,9 +107,9 @@ paths:
         description: ''
       responses:
         200:
-          description: ''
+          description: 200
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/userResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -59,7 +119,7 @@ paths:
                   first_name: adebayo
                   last_name: ajayi
                   email: ajayi@email.com
-                  password: User successfully created
+                  is_admin: false
           headers:
             Server:
               type: string
@@ -82,14 +142,6 @@ paths:
             Via:
               type: string
               default: 1.1 vegur
-        400:
-          description: Conflict
-          schema:
-            $ref: '#/definitions/BadRequest'
-          examples:
-            application/json:
-              status: error
-              error: Email/password is incorect
   /auth/signup:
     post:
       description: >-
@@ -113,10 +165,10 @@ paths:
         in: header
         required: true
         type: string
-        description: ''
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
-        required: true
+        required: false
         type: string
         description: ''
       - name: last_name
@@ -143,7 +195,7 @@ paths:
         201:
           description: ''
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/userResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -153,7 +205,7 @@ paths:
                   first_name: adebayo
                   last_name: ajayi
                   email: ajayi@email.com
-                  password: User successfully created
+                  is_admin: false
           headers:
             Server:
               type: string
@@ -179,7 +231,7 @@ paths:
         409:
           description: Conflict
           schema:
-            $ref: '#/definitions/BadRequest'
+            $ref: '#/definitions/userRequest'
           examples:
             application/json:
               status: error
@@ -208,7 +260,7 @@ paths:
         in: header
         required: true
         type: string
-        description: ''
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
         required: true
@@ -243,7 +295,7 @@ paths:
         201:
           description: ''
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/tripResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -280,7 +332,7 @@ paths:
         404:
           description: not found
           schema:
-            $ref: '#/definitions/BadRequest'
+            $ref: '#/definitions/tripRequest'
           examples:
             application/json:
               status: error
@@ -299,7 +351,7 @@ paths:
         in: header
         required: true
         type: string
-        description: ''
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
         required: true
@@ -309,7 +361,7 @@ paths:
         200:
           description: ''
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/tripResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -371,7 +423,7 @@ paths:
         in: header
         required: true
         type: string
-        description: ''
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
         required: true
@@ -386,7 +438,7 @@ paths:
         201:
           description: ''
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/bookResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -425,7 +477,7 @@ paths:
         409:
           description: conflict
           schema:
-            $ref: '#/definitions/BadRequest'
+            $ref: '#/definitions/bookRequest'
           examples:
             application/json:
               status: error
@@ -440,6 +492,11 @@ paths:
       produces:
       - application/json
       parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
         required: true
@@ -449,7 +506,7 @@ paths:
         200:
           description: ''
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/bookResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -506,6 +563,11 @@ paths:
       produces:
       - application/json
       parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
         required: true
@@ -513,9 +575,9 @@ paths:
         description: ''
       responses:
         200:
-          description: ''
+          description: ok
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/deleteResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -542,14 +604,6 @@ paths:
             Via:
               type: string
               default: 1.1 vegur
-        404:
-          description: not found
-          schema:
-            $ref: '#/definitions/BadRequest'
-          examples:
-            application/json:
-              status: error
-              error: booking with id:10 not found
   /trips/:id:
     patch:
       description: Pass in appropriate id as parameter
@@ -561,6 +615,11 @@ paths:
       produces:
       - application/json
       parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
         required: true
@@ -568,9 +627,9 @@ paths:
         description: ''
       responses:
         200:
-          description: ''
+          description: 200
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/patchResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -597,14 +656,6 @@ paths:
             Via:
               type: string
               default: 1.1 vegur
-        404:
-          description: not found
-          schema:
-            $ref: '#/definitions/BadRequest'
-          examples:
-            application/json:
-              status: error
-              error: booking with id:10 not found
   /trips/filter:
     get:
       description: >-
@@ -623,7 +674,7 @@ paths:
         in: header
         required: true
         type: string
-        description: ''
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
         required: true
@@ -636,8 +687,44 @@ paths:
         description: ''
       responses:
         200:
-          description: ''
-          headers: {}
+          description: ok
+          schema:
+            $ref: '#/definitions/tripResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: success
+              data:
+                  booking_id: 1
+                  trip_id: 1 
+                  bus_id: 4
+                  origin: lagos
+                  seat_number: 4
+                  destination: ibadan
+                  fare: 3000
+                  trip_date: 07/12/2019
+                  status: active
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: fri, 12 july 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
     /bookings/seat:
     post:
       description: >-
@@ -657,7 +744,7 @@ paths:
         in: header
         required: true
         type: string
-        description: ''
+        default: application/x-www-form-urlencoded
       - name: token
         in: header
         required: true
@@ -675,9 +762,9 @@ paths:
         description: ''
       responses:
         201:
-          description: ''
+          description: created
           schema:
-            $ref: '#/definitions/SuccesfulResponse'
+            $ref: '#/definitions/bookResponse'
           examples:
             application/json; charset=utf-8:
               status: success
@@ -716,7 +803,7 @@ paths:
         409:
           description: conflict
           schema:
-            $ref: '#/definitions/BadRequest'
+            $ref: '#/definitions/bookRequest'
           examples:
             application/json:
               status: error

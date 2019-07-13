@@ -33,6 +33,12 @@ Wayfarer is an application that enables a registered user book trips
 ### Pivotal Tracker
 Project is built with the Project Management Tool, Pivotal [Pivotal tracker stories](https://www.pivotaltracker.com/n/projects/2361794)
 
+API
+The API is currently in version 1 (v1) and is hosted at https://wayfarer-victor.herokuapp.com/
+
+API Documentation
+The API Documentation is currently hosted at https://wayfarer-victor.herokuapp.com/api/v1/docs
+
 
 
 ## Technologies Used
