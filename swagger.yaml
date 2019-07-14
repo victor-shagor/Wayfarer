@@ -552,7 +552,7 @@ paths:
             Via:
               type: string
               default: 1.1 vegur
-  /bookings/:id:
+  /bookings/{id}:
     delete:
       description: Pass in appropriate id as parameter
       summary: Delete Bookings
@@ -604,7 +604,7 @@ paths:
             Via:
               type: string
               default: 1.1 vegur
-  /trips/:id:
+  /trips/{id}:
     patch:
       description: Pass in appropriate id as parameter
       summary: Cancel a Trip

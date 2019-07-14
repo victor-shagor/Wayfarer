@@ -25,11 +25,10 @@ const validate = {
     const {
       first_name, last_name, email, password,
     } = req.body;
-    if (!validator.isAlpha(first_name) || !validator.isAlpha(last_name)
-   || !validator.isLength(first_name, { min: 3 }) || !validator.isLength(last_name, { min: 3 })) {
+    if (!validator.isAlpha(first_name) || !validator.isAlpha(last_name)) {
       return res.status(400).send({
         status: 'error',
-        error: 'Your names can only be in alphabets and must contain atleast three characters',
+        error: 'Your names can only be in alphabets',
       });
     }
     if (!validator.isEmail(email)) {
@@ -38,10 +37,10 @@ const validate = {
         error: 'please enter a valid email address',
       });
     }
-    if (!Helper.isValidPassword(password) || !validator.isLength(password, { min: 8 })) {
+    if (!validator.isAlphanumeric(password)) {
       return res.status(400).send({
         status: 'error',
-        error: 'Your password must contain atleast 8 characters and must include atleast one number(symbols are not allowed)',
+        error: 'Your password cannot be empty',
       });
     }
     pool.query('SELECT email FROM users WHERE email = $1 ', [email], (error, results) => {
@@ -105,10 +104,10 @@ const validate = {
         error: 'origin/destination cannot be empty',
       });
     }
-    if (!/^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/.test(trip_date) || validator.isEmpty(trip_date)) {
+    if (!/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/.test(trip_date) || validator.isEmpty(trip_date)) {
       return res.status(400).send({
         status: 'error',
-        error: 'Trip_date can only be a date in MM/DD/YYYY format',
+        error: 'Trip_date can only be a date in YYYY-MM-DD format',
       });
     }
     if (!validator.isFloat(fare) || !Helper.isValidNumber(bus_id) || fare < 1) {
@@ -139,17 +138,6 @@ const validate = {
         }
         return next();
       });
-    });
-  },
-  verifyGet(req, res, next) {
-    pool.query('SELECT * FROM trips', (err, results) => {
-      if (!results.rows[0]) {
-        return res.status(404).send({
-          status: 'error',
-          error: 'No trip Available',
-        });
-      }
-      return next();
     });
   },
   verifyBook(req, res, next) {
@@ -187,14 +175,14 @@ const validate = {
   },
   verifyDel(req, res, next) {
     const decoded = jwt.decode(req.headers['token'], { complete: true });
-    const { bookingId } = req.params;
-    if (!Helper.isValidNumber(bookingId)) {
+    const { booking_id } = req.params;
+    if (!Helper.isValidNumber(booking_id)) {
       return res.status(400).send({
         status: 'error',
         error: 'id can only be a number',
       });
     }
-    pool.query('SELECT * FROM bookings WHERE user_id =$1 AND booking_id =$2', [decoded.payload.user_id, bookingId], (error, results) => {
+    pool.query('SELECT * FROM bookings WHERE user_id =$1 AND booking_id =$2', [decoded.payload.user_id, booking_id], (error, results) => {
       if (!results.rows[0]) {
         return res.status(404).send({
           status: 'error',
@@ -205,14 +193,14 @@ const validate = {
     });
   },
   verifyCancel(req, res, next) {
-    const { tripId } = req.params;
-    if (!Helper.isValidNumber(tripId)) {
+    const { trip_id } = req.params;
+    if (!Helper.isValidNumber(trip_id)) {
       return res.status(400).send({
         status: 'error',
         error: 'id can only be a number',
       });
     }
-    pool.query('SELECT trip_id, status FROM trips WHERE trip_id =$1', [tripId], (error, results) => {
+    pool.query('SELECT trip_id, status FROM trips WHERE trip_id =$1', [trip_id], (error, results) => {
       if (!results.rows[0]) {
         return res.status(404).send({
           status: 'error',

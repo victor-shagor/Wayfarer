@@ -121,11 +121,11 @@ describe('users', () => {
           done();
         });
     });
-    it('should not create a user with a correct name ', (done) => {
+    it('should not create a user without a correct name ', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          first_name: 'ab', last_name: 'ojo', email: 'ojo@gmail.com', password: 'oladimeji1',
+          first_name: 'ab1', last_name: 'ojo', email: 'ojo@gmail.com', password: 'oladimeji1',
         })
         .end((err, res) => {
           res.should.have.status(400);
@@ -138,7 +138,7 @@ describe('users', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          first_name: 'ab', last_name: 'ojo', email: 'ojo@gmail.com', password: 'oladimejiii',
+          first_name: 'ab', last_name: 'ojo', email: 'ojo@gmail.com', password: '        ',
         })
         .end((err, res) => {
           res.should.have.status(400);

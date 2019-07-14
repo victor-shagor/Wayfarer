@@ -63,7 +63,7 @@ const trip = {
     }
   },
   deleteBookings(req, res) {
-    const id = parseInt(req.params.bookingId);
+    const id = parseInt(req.params.booking_id);
     const decoded = jwt.decode(req.headers['token'], { complete: true });
     pool.query('DELETE FROM bookings WHERE user_id =$1 AND booking_id =$2', [decoded.payload.user_id, id], () => {
       res.status(200).send({
@@ -73,7 +73,7 @@ const trip = {
     });
   },
   cancelTrip(req, res) {
-    const id = parseInt(req.params.tripId);
+    const id = parseInt(req.params.trip_id);
     pool.query('UPDATE trips SET status = $1 WHERE trip_id = $2', ['cancelled', id], () => {
       pool.query('UPDATE bookings SET status = $1 WHERE trip_id = $2', ['cancelled', id], () => {
         res.status(200).send({

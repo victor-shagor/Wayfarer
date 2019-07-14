@@ -50,19 +50,6 @@ describe('trips', () => {
         done();
       });
   });
-  it('should not get any trips', (done) => {
-    chai.request(app)
-      .get('/api/v1/trips')
-      .set({
-        'token': token,
-      })
-      .end((err, res) => {
-        res.should.have.status(404);
-        res.body.should.be.a('object');
-        res.body.should.have.property('error');
-        done();
-      });
-  });
   it('should create a trip', (done) => {
     chai.request(app)
       .post('/api/v1/trips')
@@ -70,7 +57,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: '1', origin: 'lagos', destination: 'kaduna', trip_date: '06/06/2020', fare: '2000',
+        bus_id: '1', origin: 'lagos', destination: 'kaduna', trip_date: '2020-10-05', fare: '2000',
       })
       .end((err, res) => {
         res.should.have.status(201);
@@ -93,7 +80,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        origin: 'ojo', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        origin: 'ojo', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -109,7 +96,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: '', origin: 'ojo', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '', origin: 'ojo', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -125,7 +112,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: '1', origin: 'ojo', destination: '[]/', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '1', origin: 'ojo', destination: '[]/', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -141,7 +128,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: '1', origin: '', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '1', origin: '', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -157,7 +144,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: '1', origin: 'ojo', destination: '', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '1', origin: 'ojo', destination: '', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -205,7 +192,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '02/02/2004', fare: '3000',
+        bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '2007-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -237,7 +224,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: 're', origin: 'lagos', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        bus_id: 're', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -253,7 +240,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: '20', origin: 'lagos', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '20', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(404);
@@ -269,7 +256,7 @@ describe('trips', () => {
         'token': token,
       })
       .send({
-        bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(409);
@@ -285,7 +272,7 @@ describe('trips', () => {
         'token': '',
       })
       .send({
-        bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(401);
@@ -301,7 +288,7 @@ describe('trips', () => {
         'token': '123ed',
       })
       .send({
-        bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -317,7 +304,7 @@ describe('trips', () => {
         'token': token1,
       })
       .send({
-        bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '06/06/2020', fare: '3000',
+        bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(403);
