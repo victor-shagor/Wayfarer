@@ -19,7 +19,7 @@ const createTables = `
    capacity INT
   );
   CREATE TABLE IF NOT EXISTS trips (
-   trip_id SERIAL PRIMARY KEY,
+   id SERIAL PRIMARY KEY,
    bus_id INT,
    origin VARCHAR,
    destination VARCHAR,
@@ -28,7 +28,7 @@ const createTables = `
    status VARCHAR
   );
   CREATE TABLE IF NOT EXISTS bookings (
-   booking_id SERIAL PRIMARY KEY,
+   id SERIAL PRIMARY KEY,
    trip_id INT,
    user_id INT,
    bus_id INT,

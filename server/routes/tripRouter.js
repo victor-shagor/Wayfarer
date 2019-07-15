@@ -1,7 +1,7 @@
 import express from 'express';
 
 import trip from '../controllers/trips';
-import validate from '../middleware/validations';
+import validate from '../middleware/tripValidations';
 import Auth from '../middleware/auth';
 
 
