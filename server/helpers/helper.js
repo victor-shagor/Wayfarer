@@ -11,9 +11,6 @@ const Helper = {
   comparePassword(hashPassword, password) {
     return bcrypt.compareSync(password, hashPassword);
   },
-  isValidPassword(password) {
-    return /^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,100}$/.test(password);
-  },
   isValidNumber(number) {
     return /^\d+$/.test(number);
   },
