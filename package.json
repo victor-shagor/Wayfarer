@@ -49,7 +49,8 @@
     "drop": "babel-node ./server/migrations/dropTables.js",
     "populate": "babel-node ./server/migrations/populateTables.js",
     "heroku:create": "node build/migrations/createTables.js",
-    "heroku:populate": "node build/migrations/populateTables.js"
+    "heroku:populate": "node build/migrations/populateTables.js",
+    "heroku:drop": "node build/migrations/dropTables.js"
   },
   "author": "ABIOLA OJO",
   "license": "ISC"

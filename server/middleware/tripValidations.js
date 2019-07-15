@@ -6,83 +6,11 @@ import Helper from '../helpers/helper';
 import pool from '../config';
 
 
-const validate = {
-  verifyInput(req, res, next) {
-    const requiredFields = ['first_name', 'last_name', 'email', 'password'];
-    const missingFields = [];
-    requiredFields.forEach((fields) => {
-      if (req.body[fields] === undefined) {
-        missingFields.push(fields);
-      }
-    });
-    if (missingFields.length !== 0) {
-      return res.status(400).send({
-        status: 'error',
-        error: 'The following field(s) is/are required',
-        fields: missingFields,
-      });
-    }
-    const {
-      first_name, last_name, email, password,
-    } = req.body;
-    if (!validator.isAlpha(first_name) || !validator.isAlpha(last_name)) {
-      return res.status(400).send({
-        status: 'error',
-        error: 'Your names can only be in alphabets',
-      });
-    }
-    if (!validator.isEmail(email)) {
-      return res.status(400).send({
-        status: 'error',
-        error: 'please enter a valid email address',
-      });
-    }
-    if (!validator.isAlphanumeric(password)) {
-      return res.status(400).send({
-        status: 'error',
-        error: 'Your password cannot be empty',
-      });
-    }
-    pool.query('SELECT email FROM users WHERE email = $1 ', [email], (error, results) => {
-      if (results.rows[0]) {
-        return res.status(409).send({
-          status: 'error',
-          error: 'This email has already being used',
-        });
-      }
-      next();
-    });
-  },
-  verifySignin(req, res, next) {
-    const { password, email } = req.body;
-    if (password === undefined || email === undefined) {
-      return res.status(400).send({
-        status: 'error',
-        error: 'Email and password is required',
-      });
-    }
-    if (validator.isEmpty(password) || validator.isEmpty(email)) {
-      return res.status(400).send({
-        status: 'error',
-        error: 'please provide email and password',
-      });
-    }
-    pool.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
-      if (!results.rows[0] || !Helper.comparePassword(results.rows[0].password, password)) {
-        return res.status(400).send({
-          status: 'error',
-          error: 'Email/password is incorrect',
-        });
-      }
-      return next();
-    });
-  },
+const validateTrip = {
   verifyTrip(req, res, next) {
     const {
       bus_id, trip_date, fare, origin, destination,
     } = req.body;
-    const date = new Date();
-    date.setHours(0, 0, 0, 0);
 
     const requiredFields = ['bus_id', 'origin', 'destination', 'trip_date', 'fare'];
     const missingFields = [];
@@ -101,25 +29,19 @@ const validate = {
     if (!validator.isAlphanumeric(origin) || !validator.isAlphanumeric(destination)) {
       return res.status(400).send({
         status: 'error',
-        error: 'origin/destination cannot be empty',
+        error: 'origin/destination must contain alphabets or numbers',
       });
     }
-    if (!/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/.test(trip_date) || validator.isEmpty(trip_date)) {
+    if (!validator.isISO8601(trip_date)) {
       return res.status(400).send({
         status: 'error',
         error: 'Trip_date can only be a date in YYYY-MM-DD format',
       });
     }
-    if (!validator.isFloat(fare) || !Helper.isValidNumber(bus_id) || fare < 1) {
+    if (!/^\d*\.?\d*$/.test(fare) || !Helper.isValidNumber(bus_id) || fare < 1) {
       return res.status(400).send({
         status: 'error',
         error: 'Bus id and fare can only be a number',
-      });
-    }
-    if (new Date(trip_date) < date) {
-      return res.status(400).send({
-        status: 'error',
-        error: 'Trip_date cannot be lesser than the present date',
       });
     }
     pool.query('SELECT id FROM bus WHERE id = $1', [bus_id], (error, results) => {
@@ -149,7 +71,7 @@ const validate = {
         error: 'trip_id can only be a number',
       });
     }
-    pool.query('SELECT trip_id, status FROM trips WHERE trip_id =$1', [trip_id], (err, results) => {
+    pool.query('SELECT id, status FROM trips WHERE id =$1', [trip_id], (err, results) => {
       if (!results.rows[0] || results.rows[0].status !== 'active') {
         return res.status(404).send({
           status: 'error',
@@ -182,7 +104,7 @@ const validate = {
         error: 'id can only be a number',
       });
     }
-    pool.query('SELECT * FROM bookings WHERE user_id =$1 AND booking_id =$2', [decoded.payload.user_id, booking_id], (error, results) => {
+    pool.query('SELECT * FROM bookings WHERE user_id =$1 AND id =$2', [decoded.payload.user_id, booking_id], (error, results) => {
       if (!results.rows[0]) {
         return res.status(404).send({
           status: 'error',
@@ -200,7 +122,7 @@ const validate = {
         error: 'id can only be a number',
       });
     }
-    pool.query('SELECT trip_id, status FROM trips WHERE trip_id =$1', [trip_id], (error, results) => {
+    pool.query('SELECT id, status FROM trips WHERE id =$1', [trip_id], (error, results) => {
       if (!results.rows[0]) {
         return res.status(404).send({
           status: 'error',
@@ -270,7 +192,7 @@ const validate = {
         error: 'seat_number can only be a number and cannot be more than 20',
       });
     }
-    pool.query('SELECT trip_id, status FROM trips WHERE trip_id =$1', [trip_id], (err, results) => {
+    pool.query('SELECT id, status FROM trips WHERE id =$1', [trip_id], (err, results) => {
       if (!results.rows[0] || results.rows[0].status !== 'active') {
         return res.status(404).send({
           status: 'error',
@@ -314,4 +236,4 @@ const validate = {
     });
   },
 };
-export default validate;
+export default validateTrip;

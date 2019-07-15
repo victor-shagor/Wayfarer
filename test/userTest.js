@@ -134,11 +134,11 @@ describe('users', () => {
           done();
         });
     });
-    it('should not create a user if password does not contain a number ', (done) => {
+    it('should not create a user if password is less than 5 ', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          first_name: 'ab', last_name: 'ojo', email: 'ojo@gmail.com', password: '        ',
+          first_name: 'ab', last_name: 'ojo', email: 'ojo@gmail.com', password: 'ade',
         })
         .end((err, res) => {
           res.should.have.status(400);

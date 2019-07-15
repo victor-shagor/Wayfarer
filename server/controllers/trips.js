@@ -28,7 +28,7 @@ const trip = {
     const created_on = new Date();
     const { trip_id } = req.body;
     const { user_id } = decoded.payload;
-    pool.query('SELECT trip_id, bus_id, trip_date FROM trips WHERE trip_id =$1', [trip_id], (err, results) => {
+    pool.query('SELECT id, bus_id, trip_date FROM trips WHERE id =$1', [trip_id], (err, results) => {
       const { bus_id, trip_date } = results.rows[0];
 
       pool.query('SELECT * FROM users WHERE user_id =$1', [user_id], (errr, user) => {
@@ -65,20 +65,20 @@ const trip = {
   deleteBookings(req, res) {
     const id = parseInt(req.params.booking_id);
     const decoded = jwt.decode(req.headers['token'], { complete: true });
-    pool.query('DELETE FROM bookings WHERE user_id =$1 AND booking_id =$2', [decoded.payload.user_id, id], () => {
+    pool.query('DELETE FROM bookings WHERE user_id =$1 AND id =$2', [decoded.payload.user_id, id], () => {
       res.status(200).send({
         status: 'success',
-        message: 'Booking deleted successfully',
+        data: { message: 'Booking deleted successfully' },
       });
     });
   },
   cancelTrip(req, res) {
     const id = parseInt(req.params.trip_id);
-    pool.query('UPDATE trips SET status = $1 WHERE trip_id = $2', ['cancelled', id], () => {
+    pool.query('UPDATE trips SET status = $1 WHERE id = $2', ['cancelled', id], () => {
       pool.query('UPDATE bookings SET status = $1 WHERE trip_id = $2', ['cancelled', id], () => {
         res.status(200).send({
           status: 200,
-          message: 'Trip cancelled successfully',
+          data: { message: 'Trip cancelled successfully' },
         });
       });
     });
@@ -108,7 +108,7 @@ const trip = {
     const created_on = new Date();
     const { trip_id, seat_number } = req.body;
     const { user_id } = decoded.payload;
-    pool.query('SELECT trip_id, bus_id, trip_date FROM trips WHERE trip_id =$1', [trip_id], (err, results) => {
+    pool.query('SELECT id, bus_id, trip_date FROM trips WHERE id =$1', [trip_id], (err, results) => {
       const { bus_id, trip_date } = results.rows[0];
 
       pool.query('SELECT * FROM users WHERE user_id =$1', [user_id], (errr, user) => {

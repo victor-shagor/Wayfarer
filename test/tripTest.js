@@ -64,7 +64,7 @@ describe('trips', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('data');
         res.body.data.should.be.a('object');
-        res.body.data.should.have.property('trip_id');
+        res.body.data.should.have.property('id');
         res.body.data.should.have.property('bus_id');
         res.body.data.should.have.property('origin');
         res.body.data.should.have.property('destination');
@@ -177,22 +177,6 @@ describe('trips', () => {
       })
       .send({
         bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '20/02/2020', fare: '3000',
-      })
-      .end((err, res) => {
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.should.have.property('error');
-        done();
-      });
-  });
-  it('should not create a trip with past trip date ', (done) => {
-    chai.request(app)
-      .post('/api/v1/trips')
-      .set({
-        'token': token,
-      })
-      .send({
-        bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '2007-10-05', fare: '3000',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -375,7 +359,7 @@ describe('trips', () => {
         res.body.data.should.have.property('email');
         res.body.data.should.have.property('created_on');
         res.body.data.should.have.property('status');
-        res.body.data.should.have.property('booking_id');
+        res.body.data.should.have.property('id');
         res.body.data.should.have.property('seat_number');
         done();
       });
@@ -498,7 +482,7 @@ describe('trips', () => {
         res.body.data.should.have.property('email');
         res.body.data.should.have.property('created_on');
         res.body.data.should.have.property('status');
-        res.body.data.should.have.property('booking_id');
+        res.body.data.should.have.property('id');
         res.body.data.should.have.property('seat_number');
         done();
       });
@@ -604,7 +588,7 @@ describe('trips', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
+        res.body.should.have.property('data');
         done();
       });
   });
@@ -643,7 +627,7 @@ describe('trips', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
+        res.body.should.have.property('data');
         done();
       });
   });
