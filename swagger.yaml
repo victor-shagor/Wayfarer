@@ -20,7 +20,6 @@ definitions:
           first_name: adebayo
           last_name: ajayi
           email: ajayi@email.com
-          password: User successfully created
     tripRequest:
       example: 
         status: error
@@ -661,7 +660,7 @@ paths:
       description: >-
         filter with either origin or destination
         Body Parameters needed are:
-        - Origin or Destination
+        - Origin or destination
       summary: Filter Trips
       tags:
       - Misc
@@ -682,7 +681,12 @@ paths:
         description: ''
       - name: origin
         in: formData
-        required: true
+        required: false
+        type: string
+        description: ''
+      - name: destination
+        in: formData
+        required: false
         type: string
         description: ''
       responses:
@@ -725,7 +729,7 @@ paths:
             Via:
               type: string
               default: 1.1 vegur
-    /bookings/seat:
+  /bookings/seat:
     post:
       description: >-
         bookings Route
