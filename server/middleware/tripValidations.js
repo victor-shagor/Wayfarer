@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
+import moment from 'moment';
 
 import Helper from '../helpers/helper';
 import pool from '../config';
@@ -36,6 +37,13 @@ const validateTrip = {
       return res.status(400).send({
         status: 'error',
         error: 'Trip_date can only be a date in YYYY-MM-DD format',
+      });
+    }
+    
+    if (moment(trip_date).diff(moment(0,'HH'),'day') < 0) {
+      return res.status(403).send({
+        status: 'error',
+        error: 'Trip_date cannot be in the past',
       });
     }
     if (!/^\d*\.?\d*$/.test(fare) || !Helper.isValidNumber(bus_id) || fare < 1) {

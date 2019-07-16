@@ -185,6 +185,22 @@ describe('trips', () => {
         done();
       });
   });
+  it('should not create a trip with a past date', (done) => {
+    chai.request(app)
+      .post('/api/v1/trips')
+      .set({
+        'token': token,
+      })
+      .send({
+        bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '2007/02/15', fare: '3000',
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done();
+      });
+  });
   it('should not create a trip without fare', (done) => {
     chai.request(app)
       .post('/api/v1/trips')
