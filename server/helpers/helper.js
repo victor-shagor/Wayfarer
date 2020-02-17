@@ -30,7 +30,7 @@ const Helper = {
     process.env.SECRET, { expiresIn: '7d' });
     return token;
   },
-  async emailSender(details) {
+  emailSender(details) {
     const DOMAIN = 'mg.bus-connect.me';
     const mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API_KEY, domain: DOMAIN });
 
