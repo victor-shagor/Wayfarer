@@ -4,7 +4,7 @@ info:
   title: Wayfarer
   description: 'TODO: Add Description'
   contact: {}
-host: wayfarer-victor.herokuapp.com
+host: bus-connect.herokuapp.com
 basePath: /api/v1
 definitions:
     userRequest:
