@@ -1,4 +1,4 @@
-# Wayfarer
+# Bus-connect
 
 [![Build Status](https://travis-ci.org/victor-shagor/Wayfarer.svg?branch=develop)](https://travis-ci.org/victor-shagor/Wayfarer)
 [![Maintainability](https://api.codeclimate.com/v1/badges/60fdeaa27fa0c206d517/maintainability)](https://codeclimate.com/github/victor-shagor/Wayfarer/maintainability)
@@ -56,7 +56,7 @@ The API Documentation is currently hosted at https://bus-connect.herokuapp.com/a
 
   ```bash
     - git clone https://github.com/victor-shagor/bus-connect.git
-    - cd Wayfarer
+    - cd bus-connect
     - npm install
     - Create/configure `.env` environment with your credentials
     - Run `npm run start` to start the server 
