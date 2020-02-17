@@ -44,9 +44,18 @@ const validateUser = {
     }
     pool.query('SELECT email FROM users WHERE email = $1 ', [email], (error, results) => {
       if (results.rows[0]) {
+        if(results.rows[0].is_verified === false){
+          return res.status(400).send({
+            status: 'error',
+            error: 'You had started the registration '
+            + 'process earlier. '
+            + 'An email has been sent to your email address. '
+            + 'Please check your email to complete your registration.',
+          });
+        }
         return res.status(409).send({
           status: 'error',
-          error: 'This email has already being used',
+          error: 'This email has already being used kindly procced to login',
         });
       }
       next();
@@ -71,6 +80,15 @@ const validateUser = {
         return res.status(400).send({
           status: 'error',
           error: 'Email/password is incorrect',
+        });
+      }
+      if (results.rows[0].is_verified ==false) {
+        return res.status(400).send({
+          status: 'error',
+          error: 'You had started the registration '
+          + 'process earlier. '
+          + 'An email has been sent to your email address. '
+          + 'Please check your email to complete your registration.',
         });
       }
       return next();

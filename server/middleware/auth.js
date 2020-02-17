@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 const Auth = {
   verifyToken(req, res, next) {
-    const token = req.headers['token'];
+    const token = req.headers['token'] || req.query.token;
     if (!token) {
       return res.status(401).send({
         status: 401,
@@ -22,7 +22,7 @@ const Auth = {
     });
   },
   verifyAdmin(req, res, next) {
-    const token = req.headers['token'];
+    const token = req.headers['token'] || req.query.token;
     if (!token) {
       return res.status(401).send({
         status: 401,

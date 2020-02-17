@@ -54,7 +54,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: 'lagos', destination: 'kaduna', trip_date: '2020-10-05', fare: '2000',
@@ -69,7 +69,7 @@ describe('trips', () => {
         res.body.data.should.have.property('origin');
         res.body.data.should.have.property('destination');
         res.body.data.should.have.property('trip_date');
-        res.body.data.should.have.property('fare')
+        res.body.data.should.have.property('fare');
         done();
       });
   });
@@ -77,7 +77,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         origin: 'ojo', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -93,7 +93,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '', origin: 'ojo', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -109,7 +109,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: 'ojo', destination: '[]/', trip_date: '2020-10-05', fare: '3000',
@@ -125,7 +125,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: '', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -141,7 +141,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: 'ojo', destination: '', trip_date: '2020-10-05', fare: '3000',
@@ -157,7 +157,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '', fare: '3000',
@@ -173,7 +173,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '20/02/2020', fare: '3000',
@@ -189,7 +189,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '2007/02/15', fare: '3000',
@@ -205,7 +205,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '06/06/2020', fare: '',
@@ -221,7 +221,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: 're', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -237,7 +237,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '20', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -253,7 +253,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .send({
         bus_id: '1', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -269,7 +269,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': '',
+        token: '',
       })
       .send({
         bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -285,7 +285,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': '123ed',
+        token: '123ed',
       })
       .send({
         bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -301,7 +301,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/trips')
       .set({
-        'token': token1,
+        token: token1,
       })
       .send({
         bus_id: '3', origin: 'lagos', destination: 'alabama', trip_date: '2020-10-05', fare: '3000',
@@ -317,7 +317,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(200);
@@ -331,7 +331,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips')
       .set({
-        'token':'',
+        token: '',
       })
       .end((err, res) => {
         res.should.have.status(401);
@@ -344,7 +344,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips')
       .set({
-        'token':'jjshghs23',
+        token: 'jjshghs23',
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -357,7 +357,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings/seat')
       .set({
-        'token': token,
+        token,
       })
       .send({
         trip_id: '1', seat_number: '1',
@@ -384,7 +384,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings/seat')
       .set({
-        'token': token,
+        token,
       })
       .send({
         trip_id: '1', seat_number: '1',
@@ -400,7 +400,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings/seat')
       .set({
-        'token': token1,
+        token: token1,
       })
       .send({
         trip_id: '1', seat_number: '1',
@@ -416,7 +416,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings/seat')
       .set({
-        'token': token,
+        token,
       })
       .send({
         trip_id: '1', seat_number: '',
@@ -432,7 +432,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings/seat')
       .set({
-        'token': token,
+        token,
       })
       .send({
         trip_id: '', seat_number: '2',
@@ -448,7 +448,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings/seat')
       .set({
-        'token': token,
+        token,
       })
       .send({
         trip_id: '30', seat_number: '3',
@@ -464,7 +464,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings/seat')
       .set({
-        'token': token,
+        token,
       })
       .send({
         trip_id: 're', seat_number: '4',
@@ -480,7 +480,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings')
       .set({
-        'token': token1,
+        token: token1,
       })
       .send({
         trip_id: '1',
@@ -507,7 +507,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings')
       .set({
-        'token': token1,
+        token: token1,
       })
       .send({
         trip_id: '1',
@@ -523,7 +523,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings')
       .set({
-        'token': token1,
+        token: token1,
       })
       .send({
         trip_id: '',
@@ -539,7 +539,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings')
       .set({
-        'token': token1,
+        token: token1,
       })
       .send({
         trip_id: '30',
@@ -555,7 +555,7 @@ describe('trips', () => {
     chai.request(app)
       .post('/api/v1/bookings')
       .set({
-        'token': token1,
+        token: token1,
       })
       .send({
         trip_id: 're',
@@ -571,7 +571,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/bookings')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(200);
@@ -585,7 +585,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/bookings')
       .set({
-        'token': token1,
+        token: token1,
       })
       .end((err, res) => {
         res.should.have.status(200);
@@ -599,7 +599,7 @@ describe('trips', () => {
     chai.request(app)
       .delete('/api/v1/bookings/1')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(200);
@@ -612,7 +612,7 @@ describe('trips', () => {
     chai.request(app)
       .delete('/api/v1/bookings/50')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(404);
@@ -625,7 +625,7 @@ describe('trips', () => {
     chai.request(app)
       .delete('/api/v1/bookings/1b')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -638,7 +638,7 @@ describe('trips', () => {
     chai.request(app)
       .patch('/api/v1/trips/1')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(200);
@@ -651,7 +651,7 @@ describe('trips', () => {
     chai.request(app)
       .patch('/api/v1/trips/50')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(404);
@@ -664,7 +664,7 @@ describe('trips', () => {
     chai.request(app)
       .patch('/api/v1/trips/1b')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(400);
@@ -677,7 +677,7 @@ describe('trips', () => {
     chai.request(app)
       .patch('/api/v1/trips/1')
       .set({
-        'token': token,
+        token,
       })
       .end((err, res) => {
         res.should.have.status(409);
@@ -690,7 +690,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips/filter')
       .set({
-        'token': token,
+        token,
       })
       .send({ origin: 'lagos' })
       .end((err, res) => {
@@ -705,7 +705,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips/filter')
       .set({
-        'token': token,
+        token,
       })
       .send({ destination: 'kaduna' })
       .end((err, res) => {
@@ -720,7 +720,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips/filter')
       .set({
-        'token': token,
+        token,
       })
       .send({ destination: '' })
       .end((err, res) => {
@@ -734,7 +734,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips/filter')
       .set({
-        'token': token,
+        token,
       })
       .send({ destination: 'lagos', origin: 'alabama' })
       .end((err, res) => {
@@ -748,7 +748,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips/filter')
       .set({
-        'token': token,
+        token,
       })
       .send({ destination: 'boston' })
       .end((err, res) => {
@@ -762,7 +762,7 @@ describe('trips', () => {
     chai.request(app)
       .get('/api/v1/trips/filter')
       .set({
-        'token': token,
+        token,
       })
       .send({ origin: 'bostone' })
       .end((err, res) => {
