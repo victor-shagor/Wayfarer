@@ -44,7 +44,7 @@ const validateUser = {
     }
     pool.query('SELECT email FROM users WHERE email = $1 ', [email], (error, results) => {
       if (results.rows[0]) {
-        if(results.rows[0].is_verified === false){
+        if (results.rows[0].is_verified === false) {
           return res.status(400).send({
             status: 'error',
             error: 'You had started the registration '
@@ -82,7 +82,7 @@ const validateUser = {
           error: 'Email/password is incorrect',
         });
       }
-      if (results.rows[0].is_verified ==false) {
+      if (results.rows[0].is_verified == false) {
         return res.status(400).send({
           status: 'error',
           error: 'You had started the registration '

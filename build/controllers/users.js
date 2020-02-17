@@ -37,7 +37,7 @@ var User = {
 
       _helper["default"].generateAuthEmail(data.email, data.first_name, data.token);
 
-      res.status(201).send({
+      res.status(201).json({
         status: 201,
         message: 'An email has been sent to your ' + 'email address. Please check your email to complete ' + 'registration'
       });
@@ -63,7 +63,7 @@ var User = {
         first_name: first_name,
         last_name: last_name
       };
-      res.status(200).send({
+      res.status(200).json({
         status: 200,
         data: data
       });
@@ -93,7 +93,7 @@ var User = {
           first_name: first_name,
           last_name: last_name
         };
-        res.status(200).send({
+        res.status(200).json({
           status: 200,
           data: data
         });

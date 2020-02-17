@@ -10,7 +10,7 @@ const trip = {
     const bus_id = parseInt(req.body.bus_id);
     pool.query('INSERT INTO trips (bus_id, origin, destination, trip_date, fare, status) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
       [bus_id, origin, destination, trip_date, fare, 'active'], (error, result) => {
-        res.status(201).send({
+        res.status(201).json({
           status: 'success',
           data: result.rows[0],
         });
@@ -18,7 +18,7 @@ const trip = {
   },
   getTrips(req, res) {
     pool.query('SELECT * FROM trips', (error, results) => {
-      return res.status(200).send({
+      return res.status(200).json({
         status: 'success',
         data: results.rows,
       });
@@ -40,7 +40,7 @@ const trip = {
 
           pool.query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
             [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], (error, result) => {
-              return res.status(201).send({
+              return res.status(201).json({
                 status: 'success',
                 data: result.rows[0],
               });
@@ -52,12 +52,12 @@ const trip = {
   getBookings(req, res) {
     const decoded = jwt.decode(req.headers['token'], { complete: true });
     if (decoded.payload.is_admin === true) {
-      pool.query('SELECT * FROM bookings', (error, results) => res.status(200).send({
+      pool.query('SELECT * FROM bookings', (error, results) => res.status(200).json({
         status: 'success',
         data: results.rows,
       }));
     } else {
-      pool.query('SELECT * FROM bookings WHERE user_id =$1', [decoded.payload.user_id], (error, results) => res.status(200).send({
+      pool.query('SELECT * FROM bookings WHERE user_id =$1', [decoded.payload.user_id], (error, results) => res.status(200).json({
         status: 'success',
         data: results.rows,
       }));
@@ -67,7 +67,7 @@ const trip = {
     const id = parseInt(req.params.booking_id);
     const decoded = jwt.decode(req.headers['token'], { complete: true });
     pool.query('DELETE FROM bookings WHERE user_id =$1 AND id =$2', [decoded.payload.user_id, id], () => {
-      res.status(200).send({
+      res.status(200).json({
         status: 'success',
         data: { message: 'Booking deleted successfully' },
       });
@@ -77,7 +77,7 @@ const trip = {
     const id = parseInt(req.params.trip_id);
     pool.query('UPDATE trips SET status = $1 WHERE id = $2', ['cancelled', id], () => {
       pool.query('UPDATE bookings SET status = $1 WHERE trip_id = $2', ['cancelled', id], () => {
-        res.status(200).send({
+        res.status(200).json({
           status: 200,
           data: { message: 'Trip cancelled successfully' },
         });
@@ -89,7 +89,7 @@ const trip = {
     const { destination } = req.body;
     if (origin) {
       pool.query('SELECT * FROM trips WHERE origin =$1', [origin], (error, results) => {
-        return res.status(200).send({
+        return res.status(200).json({
           status: 'success',
           data: results.rows,
         });
@@ -97,7 +97,7 @@ const trip = {
     }
     if (destination) {
       pool.query('SELECT * FROM trips WHERE destination =$1', [destination], (error, results) => {
-        return res.status(200).send({
+        return res.status(200).json({
           status: 'success',
           data: results.rows,
         });
@@ -117,7 +117,7 @@ const trip = {
 
         pool.query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
           [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], (error, result) => {
-            return res.status(201).send({
+            return res.status(201).json({
               status: 'success',
               data: result.rows[0],
             });

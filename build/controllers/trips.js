@@ -24,7 +24,7 @@ var trip = {
     var bus_id = parseInt(req.body.bus_id);
 
     _config["default"].query('INSERT INTO trips (bus_id, origin, destination, trip_date, fare, status) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', [bus_id, origin, destination, trip_date, fare, 'active'], function (error, result) {
-      res.status(201).send({
+      res.status(201).json({
         status: 'success',
         data: result.rows[0]
       });
@@ -32,7 +32,7 @@ var trip = {
   },
   getTrips: function getTrips(req, res) {
     _config["default"].query('SELECT * FROM trips', function (error, results) {
-      return res.status(200).send({
+      return res.status(200).json({
         status: 'success',
         data: results.rows
       });
@@ -62,7 +62,7 @@ var trip = {
           var seat_number = seat.rows.length + 1;
 
           _config["default"].query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], function (error, result) {
-            return res.status(201).send({
+            return res.status(201).json({
               status: 'success',
               data: result.rows[0]
             });
@@ -78,14 +78,14 @@ var trip = {
 
     if (decoded.payload.is_admin === true) {
       _config["default"].query('SELECT * FROM bookings', function (error, results) {
-        return res.status(200).send({
+        return res.status(200).json({
           status: 'success',
           data: results.rows
         });
       });
     } else {
       _config["default"].query('SELECT * FROM bookings WHERE user_id =$1', [decoded.payload.user_id], function (error, results) {
-        return res.status(200).send({
+        return res.status(200).json({
           status: 'success',
           data: results.rows
         });
@@ -100,7 +100,7 @@ var trip = {
     });
 
     _config["default"].query('DELETE FROM bookings WHERE user_id =$1 AND id =$2', [decoded.payload.user_id, id], function () {
-      res.status(200).send({
+      res.status(200).json({
         status: 'success',
         data: {
           message: 'Booking deleted successfully'
@@ -113,7 +113,7 @@ var trip = {
 
     _config["default"].query('UPDATE trips SET status = $1 WHERE id = $2', ['cancelled', id], function () {
       _config["default"].query('UPDATE bookings SET status = $1 WHERE trip_id = $2', ['cancelled', id], function () {
-        res.status(200).send({
+        res.status(200).json({
           status: 200,
           data: {
             message: 'Trip cancelled successfully'
@@ -128,7 +128,7 @@ var trip = {
 
     if (origin) {
       _config["default"].query('SELECT * FROM trips WHERE origin =$1', [origin], function (error, results) {
-        return res.status(200).send({
+        return res.status(200).json({
           status: 'success',
           data: results.rows
         });
@@ -137,7 +137,7 @@ var trip = {
 
     if (destination) {
       _config["default"].query('SELECT * FROM trips WHERE destination =$1', [destination], function (error, results) {
-        return res.status(200).send({
+        return res.status(200).json({
           status: 'success',
           data: results.rows
         });
@@ -167,7 +167,7 @@ var trip = {
             email = _user$rows$2.email;
 
         _config["default"].query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], function (error, result) {
-          return res.status(201).send({
+          return res.status(201).json({
             status: 'success',
             data: result.rows[0]
           });

@@ -22,6 +22,7 @@ var _tripRouter = _interopRequireDefault(require("./routes/tripRouter"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var app = (0, _express["default"])();
+app.use((0, _cors["default"])());
 
 var swaggerDoc = _yamljs["default"].load('./swagger.yaml');
 
@@ -30,7 +31,6 @@ app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded({
   extended: false
 }));
-app.use((0, _cors["default"])());
 app.use('/', _userRouter["default"]);
 app.use('/', _tripRouter["default"]);
 app.get('/', function (req, res) {
@@ -43,7 +43,7 @@ app.use('*', function (req, res) {
     message: 'route not found'
   });
 });
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 app.listen(port, function () {
   console.log("Listening from port ".concat(port));
 });
