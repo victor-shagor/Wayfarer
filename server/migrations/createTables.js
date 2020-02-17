@@ -8,6 +8,7 @@ const createTables = `
    first_name VARCHAR(20),
    last_name VARCHAR(20),
    password VARCHAR,
+   is_verified BOOLEAN,
    is_admin BOOLEAN
   );
   CREATE TABLE IF NOT EXISTS bus (
