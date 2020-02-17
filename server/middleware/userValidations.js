@@ -15,7 +15,7 @@ const validateUser = {
       }
     });
     if (missingFields.length !== 0) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'The following field(s) is/are required',
         fields: missingFields,
@@ -25,27 +25,27 @@ const validateUser = {
       first_name, last_name, email, password,
     } = req.body;
     if (!validator.isAlpha(first_name) || !validator.isAlpha(last_name)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Your names can only be in alphabets',
       });
     }
     if (!validator.isEmail(email)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'please enter a valid email address',
       });
     }
     if (!password || !validator.isLength(password, { min: 5 })) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Your password cannot be less than 5 characters',
       });
     }
-    pool.query('SELECT email FROM users WHERE email = $1 ', [email], (error, results) => {
+    pool.query('SELECT email, is_verified FROM users WHERE email = $1 ', [email], (error, results) => {
       if (results.rows[0]) {
         if (results.rows[0].is_verified === false) {
-          return res.status(400).send({
+          return res.status(400).json({
             status: 'error',
             error: 'You had started the registration '
             + 'process earlier. '
@@ -53,7 +53,7 @@ const validateUser = {
             + 'Please check your email to complete your registration.',
           });
         }
-        return res.status(409).send({
+        return res.status(409).json({
           status: 'error',
           error: 'This email has already being used kindly procced to login',
         });
@@ -64,26 +64,26 @@ const validateUser = {
   verifySignin(req, res, next) {
     const { password, email } = req.body;
     if (password === undefined || email === undefined) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Email and password is required',
       });
     }
     if (validator.isEmpty(password) || validator.isEmpty(email)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'please provide email and password',
       });
     }
     pool.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
       if (!results.rows[0] || !Helper.comparePassword(results.rows[0].password, password)) {
-        return res.status(400).send({
+        return res.status(400).json({
           status: 'error',
           error: 'Email/password is incorrect',
         });
       }
-      if (results.rows[0].is_verified == false) {
-        return res.status(400).send({
+      if (results.rows[0].is_verified === false) {
+        return res.status(400).json({
           status: 'error',
           error: 'You had started the registration '
           + 'process earlier. '
