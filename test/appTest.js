@@ -12,7 +12,7 @@ describe('Root route', () => {
     chai.request(app)
       .get('/')
       .end((err, res) => {
-        expect(res.body.message).to.equal('Welcome to Wayfarer');
+        expect(res.body.message).to.equal('Welcome to bus-connect');
         expect(res.status).to.equal(200);
         done();
       });
