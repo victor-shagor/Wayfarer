@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use('/', userRouter);
 app.use('/', tripRouter);
-app.get('/', (req, res) => res.status(200).send({ message: 'Welcome to Wayfarer' }));
+app.get('/', (req, res) => res.status(200).send({ message: 'Welcome to bus-connect' }));
 app.use('*', (req, res) => res.status(404).send({ message: 'route not found' }));
 
 
