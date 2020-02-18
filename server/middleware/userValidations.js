@@ -44,19 +44,12 @@ const validateUser = {
     }
     pool.query('SELECT email, is_verified FROM users WHERE email = $1 ', [email], (error, results) => {
       if (results.rows[0]) {
-        if (results.rows[0].is_verified === false) {
-          return res.status(400).json({
+        if (results.rows[0].is_verified === true) {
+          return res.status(409).json({
             status: 'error',
-            error: 'You had started the registration '
-            + 'process earlier. '
-            + 'An email has been sent to your email address. '
-            + 'Please check your email to complete your registration.',
+            error: 'This email has already being used kindly procced to login',
           });
         }
-        return res.status(409).json({
-          status: 'error',
-          error: 'This email has already being used kindly procced to login',
-        });
       }
       next();
     });
