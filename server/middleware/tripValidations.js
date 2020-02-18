@@ -21,47 +21,47 @@ const validateTrip = {
       }
     });
     if (missingFields.length !== 0) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'The following field(s) is/are required',
         fields: missingFields,
       });
     }
     if (!validator.isAlphanumeric(origin) || !validator.isAlphanumeric(destination)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'origin/destination must contain alphabets or numbers',
       });
     }
     if (!validator.isISO8601(trip_date)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Trip_date can only be a date in YYYY-MM-DD format',
       });
     }
     
     if (moment(trip_date).diff(moment(0,'HH'),'day') < 0) {
-      return res.status(403).send({
+      return res.status(403).json({
         status: 'error',
         error: 'Trip_date cannot be in the past',
       });
     }
     if (!/^\d*\.?\d*$/.test(fare) || !Helper.isValidNumber(bus_id) || fare < 1) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Bus id and fare can only be a number',
       });
     }
     pool.query('SELECT id FROM bus WHERE id = $1', [bus_id], (error, results) => {
       if (!results.rows[0]) {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: `Bus with id:${bus_id} not found`,
         });
       }
       pool.query('SELECT bus_id FROM trips WHERE bus_id = $1', [bus_id], (err, result) => {
         if (result.rows[0]) {
-          return res.status(409).send({
+          return res.status(409).json({
             status: 'error',
             error: `Bus with id:${bus_id} already assigned to a trip`,
           });
@@ -74,14 +74,14 @@ const validateTrip = {
     const decoded = jwt.decode(req.headers['token'], { complete: true });
     const { trip_id } = req.body;
     if (!trip_id || !Helper.isValidNumber(trip_id)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'trip_id can only be a number',
       });
     }
     pool.query('SELECT id, status FROM trips WHERE id =$1', [trip_id], (err, results) => {
       if (!results.rows[0] || results.rows[0].status !== 'active') {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: 'Trip not found/Active',
         });
@@ -94,7 +94,7 @@ const validateTrip = {
           }
         });
         if (test === false) {
-          return res.status(400).send({
+          return res.status(400).json({
             status: 'error',
             error: 'Trip already booked by you',
           });
@@ -107,14 +107,14 @@ const validateTrip = {
     const decoded = jwt.decode(req.headers['token'], { complete: true });
     const { booking_id } = req.params;
     if (!Helper.isValidNumber(booking_id)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'id can only be a number',
       });
     }
     pool.query('SELECT * FROM bookings WHERE user_id =$1 AND id =$2', [decoded.payload.user_id, booking_id], (error, results) => {
       if (!results.rows[0]) {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: 'booking not on your booking list',
         });
@@ -125,20 +125,20 @@ const validateTrip = {
   verifyCancel(req, res, next) {
     const { trip_id } = req.params;
     if (!Helper.isValidNumber(trip_id)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'id can only be a number',
       });
     }
     pool.query('SELECT id, status FROM trips WHERE id =$1', [trip_id], (error, results) => {
       if (!results.rows[0]) {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: 'Trip not found',
         });
       }
       if (results.rows[0].status === 'cancelled') {
-        return res.status(409).send({
+        return res.status(409).json({
           status: 'error',
           error: 'Trip already cancelled',
         });
@@ -150,13 +150,13 @@ const validateTrip = {
     const { origin } = req.body;
     const { destination } = req.body;
     if (!origin && !destination) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Either origin or destination is required to filter',
       });
     }
     if (origin && destination) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'you can only filter with either origin or destination but not both',
       });
@@ -164,7 +164,7 @@ const validateTrip = {
     if (origin) {
       pool.query('SELECT * FROM trips WHERE origin =$1', [origin], (error, results) => {
         if (!results.rows[0]) {
-          return res.status(404).send({
+          return res.status(404).json({
             status: 'error',
             error: `There no trips from ${origin}`,
           });
@@ -175,7 +175,7 @@ const validateTrip = {
     if (destination) {
       pool.query('SELECT * FROM trips WHERE destination =$1', [destination], (error, result) => {
         if (!result.rows[0]) {
-          return res.status(404).send({
+          return res.status(404).json({
             status: 'error',
             error: `There no trips going to ${destination}`,
           });
@@ -189,20 +189,20 @@ const validateTrip = {
     const seat = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     const { trip_id, seat_number } = req.body;
     if (!trip_id || !Helper.isValidNumber(trip_id)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'trip_id can only be a number',
       });
     }
     if (!seat_number || seat_number > 20 || !Helper.isValidNumber(seat_number)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'seat_number can only be a number and cannot be more than 20',
       });
     }
     pool.query('SELECT id, status FROM trips WHERE id =$1', [trip_id], (err, results) => {
       if (!results.rows[0] || results.rows[0].status !== 'active') {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: 'Trip not found/Active',
         });
@@ -215,7 +215,7 @@ const validateTrip = {
           }
         });
         if (test === false) {
-          return res.status(400).send({
+          return res.status(400).json({
             status: 'error',
             error: 'Trip already booked by you',
           });
@@ -233,7 +233,7 @@ const validateTrip = {
             }
           });
           if (testing === false) {
-            return res.status(409).send({
+            return res.status(409).json({
               status: 'error',
               error: `Seat taken, seats available are ${seat}`,
             });
