@@ -688,7 +688,7 @@ describe('trips', () => {
   });
   it('should filter trip with origin', (done) => {
     chai.request(app)
-      .get('/api/v1/trips/filter')
+      .post('/api/v1/trips/filter')
       .set({
         token,
       })
@@ -703,7 +703,7 @@ describe('trips', () => {
   });
   it('should filter trip with destination', (done) => {
     chai.request(app)
-      .get('/api/v1/trips/filter')
+      .post('/api/v1/trips/filter')
       .set({
         token,
       })
@@ -718,7 +718,7 @@ describe('trips', () => {
   });
   it('should not filter trip with without destination or origin', (done) => {
     chai.request(app)
-      .get('/api/v1/trips/filter')
+      .post('/api/v1/trips/filter')
       .set({
         token,
       })
@@ -732,7 +732,7 @@ describe('trips', () => {
   });
   it('should not filter trip with  destination and origin that doesnt exist', (done) => {
     chai.request(app)
-      .get('/api/v1/trips/filter')
+      .post('/api/v1/trips/filter')
       .set({
         token,
       })
@@ -746,7 +746,7 @@ describe('trips', () => {
   });
   it('should not filter trip with wrong destination', (done) => {
     chai.request(app)
-      .get('/api/v1/trips/filter')
+      .post('/api/v1/trips/filter')
       .set({
         token,
       })
@@ -760,7 +760,7 @@ describe('trips', () => {
   });
   it('should filter trip with destination and origin', (done) => {
     chai.request(app)
-      .get('/api/v1/trips/filter')
+      .post('/api/v1/trips/filter')
       .set({
         token,
       })
@@ -775,7 +775,7 @@ describe('trips', () => {
   });
   it('should not filter trip with wrong origin', (done) => {
     chai.request(app)
-      .get('/api/v1/trips/filter')
+      .post('/api/v1/trips/filter')
       .set({
         token,
       })
