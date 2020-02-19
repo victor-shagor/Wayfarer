@@ -39,7 +39,7 @@ var trip = {
     });
   },
   book: function book(req, res) {
-    var decoded = _jsonwebtoken["default"].decode(req.headers['token'], {
+    var decoded = _jsonwebtoken["default"].decode(req.headers.token, {
       complete: true
     });
 
@@ -72,7 +72,7 @@ var trip = {
     });
   },
   getBookings: function getBookings(req, res) {
-    var decoded = _jsonwebtoken["default"].decode(req.headers['token'], {
+    var decoded = _jsonwebtoken["default"].decode(req.headers.token, {
       complete: true
     });
 
@@ -95,7 +95,7 @@ var trip = {
   deleteBookings: function deleteBookings(req, res) {
     var id = parseInt(req.params.booking_id);
 
-    var decoded = _jsonwebtoken["default"].decode(req.headers['token'], {
+    var decoded = _jsonwebtoken["default"].decode(req.headers.token, {
       complete: true
     });
 
@@ -126,7 +126,7 @@ var trip = {
     var origin = req.body.origin;
     var destination = req.body.destination;
 
-    if (origin) {
+    if (origin && !destination) {
       _config["default"].query('SELECT * FROM trips WHERE origin =$1', [origin], function (error, results) {
         return res.status(200).json({
           status: 'success',
@@ -135,7 +135,7 @@ var trip = {
       });
     }
 
-    if (destination) {
+    if (destination && !origin) {
       _config["default"].query('SELECT * FROM trips WHERE destination =$1', [destination], function (error, results) {
         return res.status(200).json({
           status: 'success',
@@ -143,9 +143,18 @@ var trip = {
         });
       });
     }
+
+    if (destination && origin) {
+      _config["default"].query('SELECT * FROM trips WHERE destination =$1 AND origin=$2', [destination, origin], function (error, resul) {
+        return res.status(200).json({
+          status: 'success',
+          data: resul.rows
+        });
+      });
+    }
   },
   changeSeat: function changeSeat(req, res) {
-    var decoded = _jsonwebtoken["default"].decode(req.headers['token'], {
+    var decoded = _jsonwebtoken["default"].decode(req.headers.token, {
       complete: true
     });
 
