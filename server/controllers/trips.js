@@ -6,7 +6,9 @@ import pool from '../config';
 
 const trip = {
   create(req, res) {
-    const { origin, destination, trip_date, fare } = req.body;
+    const {
+      origin, destination, trip_date, fare,
+    } = req.body;
     const bus_id = parseInt(req.body.bus_id);
     pool.query('INSERT INTO trips (bus_id, origin, destination, trip_date, fare, status) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
       [bus_id, origin, destination, trip_date, fare, 'active'], (error, result) => {
@@ -17,15 +19,13 @@ const trip = {
       });
   },
   getTrips(req, res) {
-    pool.query('SELECT * FROM trips', (error, results) => {
-      return res.status(200).json({
-        status: 'success',
-        data: results.rows,
-      });
-    });
+    pool.query('SELECT * FROM trips', (error, results) => res.status(200).json({
+      status: 'success',
+      data: results.rows,
+    }));
   },
   book(req, res) {
-    const decoded = jwt.decode(req.headers['token'], { complete: true });
+    const decoded = jwt.decode(req.headers.token, { complete: true });
     const created_on = new Date();
     const { trip_id } = req.body;
     const { user_id } = decoded.payload;
@@ -36,21 +36,19 @@ const trip = {
         const { first_name, last_name, email } = user.rows[0];
 
         pool.query('SELECT seat_number FROM bookings WHERE trip_id =$1', [trip_id], (errr, seat) => {
-          const seat_number = seat.rows.length+1;
+          const seat_number = seat.rows.length + 1;
 
           pool.query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-            [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], (error, result) => {
-              return res.status(201).json({
-                status: 'success',
-                data: result.rows[0],
-              });
-            });
+            [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], (error, result) => res.status(201).json({
+              status: 'success',
+              data: result.rows[0],
+            }));
         });
       });
     });
   },
   getBookings(req, res) {
-    const decoded = jwt.decode(req.headers['token'], { complete: true });
+    const decoded = jwt.decode(req.headers.token, { complete: true });
     if (decoded.payload.is_admin === true) {
       pool.query('SELECT * FROM bookings', (error, results) => res.status(200).json({
         status: 'success',
@@ -65,7 +63,7 @@ const trip = {
   },
   deleteBookings(req, res) {
     const id = parseInt(req.params.booking_id);
-    const decoded = jwt.decode(req.headers['token'], { complete: true });
+    const decoded = jwt.decode(req.headers.token, { complete: true });
     pool.query('DELETE FROM bookings WHERE user_id =$1 AND id =$2', [decoded.payload.user_id, id], () => {
       res.status(200).json({
         status: 'success',
@@ -87,25 +85,27 @@ const trip = {
   getFilterTrips(req, res) {
     const { origin } = req.body;
     const { destination } = req.body;
-    if (origin) {
-      pool.query('SELECT * FROM trips WHERE origin =$1', [origin], (error, results) => {
-        return res.status(200).json({
-          status: 'success',
-          data: results.rows,
-        });
-      });
+    if (origin && !destination) {
+      pool.query('SELECT * FROM trips WHERE origin =$1', [origin], (error, results) => res.status(200).json({
+        status: 'success',
+        data: results.rows,
+      }));
     }
-    if (destination) {
-      pool.query('SELECT * FROM trips WHERE destination =$1', [destination], (error, results) => {
-        return res.status(200).json({
-          status: 'success',
-          data: results.rows,
-        });
-      });
+    if (destination && !origin) {
+      pool.query('SELECT * FROM trips WHERE destination =$1', [destination], (error, results) => res.status(200).json({
+        status: 'success',
+        data: results.rows,
+      }));
+    }
+    if (destination && origin) {
+      pool.query('SELECT * FROM trips WHERE destination =$1 AND origin=$2', [destination, origin], (error, resul) => res.status(200).json({
+        status: 'success',
+        data: resul.rows,
+      }));
     }
   },
   changeSeat(req, res) {
-    const decoded = jwt.decode(req.headers['token'], { complete: true });
+    const decoded = jwt.decode(req.headers.token, { complete: true });
     const created_on = new Date();
     const { trip_id, seat_number } = req.body;
     const { user_id } = decoded.payload;
@@ -116,15 +116,12 @@ const trip = {
         const { first_name, last_name, email } = user.rows[0];
 
         pool.query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-          [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], (error, result) => {
-            return res.status(201).json({
-              status: 'success',
-              data: result.rows[0],
-            });
-          });
+          [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], (error, result) => res.status(201).json({
+            status: 'success',
+            data: result.rows[0],
+          }));
       });
     });
   },
 };
 export default trip;
- 

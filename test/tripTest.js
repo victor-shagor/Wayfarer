@@ -730,7 +730,7 @@ describe('trips', () => {
         done();
       });
   });
-  it('should not filter trip with with destination and origin', (done) => {
+  it('should not filter trip with  destination and origin that doesnt exist', (done) => {
     chai.request(app)
       .get('/api/v1/trips/filter')
       .set({
@@ -755,6 +755,21 @@ describe('trips', () => {
         res.should.have.status(404);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
+        done();
+      });
+  });
+  it('should filter trip with destination and origin', (done) => {
+    chai.request(app)
+      .get('/api/v1/trips/filter')
+      .set({
+        token,
+      })
+      .send({ origin: 'lagos', destination: 'kaduna' })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('data');
+        res.body.data.should.be.an('array');
         done();
       });
   });

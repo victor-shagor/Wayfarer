@@ -156,12 +156,17 @@ const validateTrip = {
       });
     }
     if (origin && destination) {
-      return res.status(400).json({
-        status: 'error',
-        error: 'you can only filter with either origin or destination but not both',
+      pool.query('SELECT * FROM trips WHERE origin =$1 AND destination=$2', [origin, destination], (error, resul) => {
+        if (!resul.rows[0]) {
+          return res.status(400).json({
+            status: 'error',
+            error: `There no trips from ${origin} going to ${destination}`,
+          });
+        }
+        next() 
       });
     }
-    if (origin) {
+    if (origin && !destination) {
       pool.query('SELECT * FROM trips WHERE origin =$1', [origin], (error, results) => {
         if (!results.rows[0]) {
           return res.status(404).json({
@@ -172,7 +177,7 @@ const validateTrip = {
         next();
       });
     }
-    if (destination) {
+    if (destination && !origin) {
       pool.query('SELECT * FROM trips WHERE destination =$1', [destination], (error, result) => {
         if (!result.rows[0]) {
           return res.status(404).json({
