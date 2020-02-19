@@ -184,52 +184,6 @@ var validateTrip = {
       return next();
     });
   },
-  verifyGet: function verifyGet(req, res, next) {
-    var _req$query = req.query,
-        origin = _req$query.origin,
-        destination = _req$query.destination;
-
-    if (origin && destination) {
-      _config["default"].query('SELECT * FROM trips WHERE origin =$1 AND destination=$2', [origin, destination], function (error, resul) {
-        if (!resul.rows[0]) {
-          return res.status(400).json({
-            status: 'error',
-            error: "There no trips from ".concat(origin, " going to ").concat(destination)
-          });
-        }
-
-        next();
-      });
-    }
-
-    if (origin && !destination) {
-      _config["default"].query('SELECT * FROM trips WHERE origin =$1', [origin], function (error, results) {
-        if (!results.rows[0]) {
-          return res.status(404).json({
-            status: 'error',
-            error: "There no trips from ".concat(origin)
-          });
-        }
-
-        next();
-      });
-    }
-
-    if (destination && !origin) {
-      _config["default"].query('SELECT * FROM trips WHERE destination =$1', [destination], function (error, result) {
-        if (!result.rows[0]) {
-          return res.status(404).json({
-            status: 'error',
-            error: "There no trips going to ".concat(destination)
-          });
-        }
-
-        next();
-      });
-    }
-
-    next();
-  },
   verifyFilter: function verifyFilter(req, res, next) {
     var origin = req.body.origin;
     var destination = req.body.destination;

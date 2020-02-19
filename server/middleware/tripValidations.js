@@ -146,43 +146,6 @@ const validateTrip = {
       return next();
     });
   },
-  verifyGet(req, res, next) {
-    const { origin, destination } = req.query;
-    if (origin && destination) {
-      pool.query('SELECT * FROM trips WHERE origin =$1 AND destination=$2', [origin, destination], (error, resul) => {
-        if (!resul.rows[0]) {
-          return res.status(400).json({
-            status: 'error',
-            error: `There no trips from ${origin} going to ${destination}`,
-          });
-        }
-        next() 
-      });
-    }
-    if (origin && !destination) {
-      pool.query('SELECT * FROM trips WHERE origin =$1', [origin], (error, results) => {
-        if (!results.rows[0]) {
-          return res.status(404).json({
-            status: 'error',
-            error: `There no trips from ${origin}`,
-          });
-        }
-        next();
-      });
-    }
-    if (destination && !origin) {
-      pool.query('SELECT * FROM trips WHERE destination =$1', [destination], (error, result) => {
-        if (!result.rows[0]) {
-          return res.status(404).json({
-            status: 'error',
-            error: `There no trips going to ${destination}`,
-          });
-        }
-        next();
-      });
-    }
-    next();
-  },
   verifyFilter(req, res, next) {
     const { origin } = req.body;
     const { destination } = req.body;
