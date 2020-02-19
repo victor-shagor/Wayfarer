@@ -18,6 +18,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var tripRouter = _express["default"].Router();
 
 var verifyTrip = _tripValidations["default"].verifyTrip,
+    verifyGet = _tripValidations["default"].verifyGet,
     verifyBook = _tripValidations["default"].verifyBook,
     verifyDel = _tripValidations["default"].verifyDel,
     verifyCancel = _tripValidations["default"].verifyCancel,
@@ -34,7 +35,7 @@ var create = _trips["default"].create,
 var verifyAdmin = _auth["default"].verifyAdmin,
     verifyToken = _auth["default"].verifyToken;
 tripRouter.route('/api/v1/trips').post(verifyAdmin, verifyTrip, create);
-tripRouter.route('/api/v1/trips').get(verifyToken, getTrips);
+tripRouter.route('/api/v1/trips').get(verifyToken, verifyGet, getTrips);
 tripRouter.route('/api/v1/bookings').post(verifyToken, verifyBook, book);
 tripRouter.route('/api/v1/bookings').get(verifyToken, getBookings);
 tripRouter.route('/api/v1/bookings/:booking_id')["delete"](verifyToken, verifyDel, deleteBookings);
