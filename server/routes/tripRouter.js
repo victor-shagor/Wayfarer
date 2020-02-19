@@ -18,7 +18,7 @@ tripRouter.route('/api/v1/bookings').post(verifyToken, verifyBook, book);
 tripRouter.route('/api/v1/bookings').get(verifyToken, getBookings);
 tripRouter.route('/api/v1/bookings/:booking_id').delete(verifyToken, verifyDel, deleteBookings);
 tripRouter.route('/api/v1/trips/:trip_id').patch(verifyAdmin, verifyCancel, cancelTrip);
-tripRouter.route('/api/v1/trips/filter').get(verifyToken, verifyFilter, getFilterTrips);
+tripRouter.route('/api/v1/trips/filter').post(verifyToken, verifyFilter, getFilterTrips);
 tripRouter.route('/api/v1/bookings/seat').post(verifyToken, verifySeat, changeSeat);
 
 
