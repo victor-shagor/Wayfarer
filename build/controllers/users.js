@@ -13,6 +13,8 @@ var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+/* eslint-disable max-len */
+
 /* eslint-disable camelcase */
 var User = {
   create: function create(req, res) {
@@ -23,6 +25,21 @@ var User = {
     var is_admin = false;
 
     var password = _helper["default"].hashPassword(req.body.password);
+
+    _config["default"].query('SELECT * FROM users WHERE email = $1 ', [email], function (error, result) {
+      if (result.rows[0]) {
+        if (result.rows[0].is_verified === false) {
+          var token = _helper["default"].generateToken(result.rows[0].user_id, result.rows[0].email, result.rows[0].is_admin);
+
+          _helper["default"].generateAuthEmail(result.rows[0].email, result.rows[0].first_name, token);
+
+          return res.status(201).json({
+            status: 201,
+            message: 'An email has been sent to your ' + 'email address. Please check your email to complete ' + 'registration'
+          });
+        }
+      }
+    });
 
     _config["default"].query('INSERT INTO users (first_name, last_name, email, password, is_admin, is_verified) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id', [first_name, last_name, email, password, is_admin, false], function (error, results) {
       var user_id = results.rows[0].user_id;

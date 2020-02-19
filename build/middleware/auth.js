@@ -15,7 +15,7 @@ var Auth = {
     var token = req.headers['token'] || req.query.token;
 
     if (!token) {
-      return res.status(401).send({
+      return res.status(401).json({
         status: 401,
         error: 'Access Denied, Token is not provided'
       });
@@ -23,7 +23,7 @@ var Auth = {
 
     _jsonwebtoken["default"].verify(token, process.env.SECRET, function (error) {
       if (error) {
-        return res.status(400).send({
+        return res.status(400).json({
           status: 400,
           error: 'Access Denied, The Token provided is invalid'
         });
@@ -36,7 +36,7 @@ var Auth = {
     var token = req.headers['token'] || req.query.token;
 
     if (!token) {
-      return res.status(401).send({
+      return res.status(401).json({
         status: 401,
         error: 'Access Denied, Token is not provided'
       });
@@ -44,14 +44,14 @@ var Auth = {
 
     _jsonwebtoken["default"].verify(token, process.env.SECRET, function (error, decoded) {
       if (error) {
-        return res.status(400).send({
+        return res.status(400).json({
           status: 400,
           error: 'Access Denied, The Token provided is invalid'
         });
       }
 
       if (decoded.is_admin !== true) {
-        return res.status(403).send({
+        return res.status(403).json({
           status: 403,
           error: 'Only Admin can access this route'
         });

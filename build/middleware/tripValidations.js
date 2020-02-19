@@ -35,7 +35,7 @@ var validateTrip = {
     });
 
     if (missingFields.length !== 0) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'The following field(s) is/are required',
         fields: missingFields
@@ -43,28 +43,28 @@ var validateTrip = {
     }
 
     if (!_validator["default"].isAlphanumeric(origin) || !_validator["default"].isAlphanumeric(destination)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'origin/destination must contain alphabets or numbers'
       });
     }
 
     if (!_validator["default"].isISO8601(trip_date)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Trip_date can only be a date in YYYY-MM-DD format'
       });
     }
 
     if ((0, _moment["default"])(trip_date).diff((0, _moment["default"])(0, 'HH'), 'day') < 0) {
-      return res.status(403).send({
+      return res.status(403).json({
         status: 'error',
         error: 'Trip_date cannot be in the past'
       });
     }
 
     if (!/^\d*\.?\d*$/.test(fare) || !_helper["default"].isValidNumber(bus_id) || fare < 1) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Bus id and fare can only be a number'
       });
@@ -72,7 +72,7 @@ var validateTrip = {
 
     _config["default"].query('SELECT id FROM bus WHERE id = $1', [bus_id], function (error, results) {
       if (!results.rows[0]) {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: "Bus with id:".concat(bus_id, " not found")
         });
@@ -80,7 +80,7 @@ var validateTrip = {
 
       _config["default"].query('SELECT bus_id FROM trips WHERE bus_id = $1', [bus_id], function (err, result) {
         if (result.rows[0]) {
-          return res.status(409).send({
+          return res.status(409).json({
             status: 'error',
             error: "Bus with id:".concat(bus_id, " already assigned to a trip")
           });
@@ -98,7 +98,7 @@ var validateTrip = {
     var trip_id = req.body.trip_id;
 
     if (!trip_id || !_helper["default"].isValidNumber(trip_id)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'trip_id can only be a number'
       });
@@ -106,7 +106,7 @@ var validateTrip = {
 
     _config["default"].query('SELECT id, status FROM trips WHERE id =$1', [trip_id], function (err, results) {
       if (!results.rows[0] || results.rows[0].status !== 'active') {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: 'Trip not found/Active'
         });
@@ -121,7 +121,7 @@ var validateTrip = {
         });
 
         if (test === false) {
-          return res.status(400).send({
+          return res.status(400).json({
             status: 'error',
             error: 'Trip already booked by you'
           });
@@ -139,7 +139,7 @@ var validateTrip = {
     var booking_id = req.params.booking_id;
 
     if (!_helper["default"].isValidNumber(booking_id)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'id can only be a number'
       });
@@ -147,7 +147,7 @@ var validateTrip = {
 
     _config["default"].query('SELECT * FROM bookings WHERE user_id =$1 AND id =$2', [decoded.payload.user_id, booking_id], function (error, results) {
       if (!results.rows[0]) {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: 'booking not on your booking list'
         });
@@ -160,7 +160,7 @@ var validateTrip = {
     var trip_id = req.params.trip_id;
 
     if (!_helper["default"].isValidNumber(trip_id)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'id can only be a number'
       });
@@ -168,14 +168,14 @@ var validateTrip = {
 
     _config["default"].query('SELECT id, status FROM trips WHERE id =$1', [trip_id], function (error, results) {
       if (!results.rows[0]) {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: 'Trip not found'
         });
       }
 
       if (results.rows[0].status === 'cancelled') {
-        return res.status(409).send({
+        return res.status(409).json({
           status: 'error',
           error: 'Trip already cancelled'
         });
@@ -189,23 +189,29 @@ var validateTrip = {
     var destination = req.body.destination;
 
     if (!origin && !destination) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Either origin or destination is required to filter'
       });
     }
 
     if (origin && destination) {
-      return res.status(400).send({
-        status: 'error',
-        error: 'you can only filter with either origin or destination but not both'
+      _config["default"].query('SELECT * FROM trips WHERE origin =$1 AND destination=$2', [origin, destination], function (error, resul) {
+        if (!resul.rows[0]) {
+          return res.status(400).json({
+            status: 'error',
+            error: "There no trips from ".concat(origin, " going to ").concat(destination)
+          });
+        }
+
+        next();
       });
     }
 
-    if (origin) {
+    if (origin && !destination) {
       _config["default"].query('SELECT * FROM trips WHERE origin =$1', [origin], function (error, results) {
         if (!results.rows[0]) {
-          return res.status(404).send({
+          return res.status(404).json({
             status: 'error',
             error: "There no trips from ".concat(origin)
           });
@@ -215,10 +221,10 @@ var validateTrip = {
       });
     }
 
-    if (destination) {
+    if (destination && !origin) {
       _config["default"].query('SELECT * FROM trips WHERE destination =$1', [destination], function (error, result) {
         if (!result.rows[0]) {
-          return res.status(404).send({
+          return res.status(404).json({
             status: 'error',
             error: "There no trips going to ".concat(destination)
           });
@@ -239,14 +245,14 @@ var validateTrip = {
         seat_number = _req$body2.seat_number;
 
     if (!trip_id || !_helper["default"].isValidNumber(trip_id)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'trip_id can only be a number'
       });
     }
 
     if (!seat_number || seat_number > 20 || !_helper["default"].isValidNumber(seat_number)) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'seat_number can only be a number and cannot be more than 20'
       });
@@ -254,7 +260,7 @@ var validateTrip = {
 
     _config["default"].query('SELECT id, status FROM trips WHERE id =$1', [trip_id], function (err, results) {
       if (!results.rows[0] || results.rows[0].status !== 'active') {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
           error: 'Trip not found/Active'
         });
@@ -269,7 +275,7 @@ var validateTrip = {
         });
 
         if (test === false) {
-          return res.status(400).send({
+          return res.status(400).json({
             status: 'error',
             error: 'Trip already booked by you'
           });
@@ -290,7 +296,7 @@ var validateTrip = {
           });
 
           if (testing === false) {
-            return res.status(409).send({
+            return res.status(409).json({
               status: 'error',
               error: "Seat taken, seats available are ".concat(seat)
             });

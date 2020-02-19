@@ -57,7 +57,7 @@ describe('trips', () => {
         token,
       })
       .send({
-        bus_id: '1', origin: 'lagos', destination: 'kaduna', trip_date: '2020-10-05', fare: '2000',
+        bus_id: '6', origin: 'lagos', destination: 'kaduna', trip_date: '2020-10-05', fare: '2000',
       })
       .end((err, res) => {
         res.should.have.status(201);
