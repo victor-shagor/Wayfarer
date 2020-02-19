@@ -7,13 +7,13 @@ import Auth from '../middleware/auth';
 
 const tripRouter = express.Router();
 
-const { verifyTrip, verifyBook, verifyDel, verifyCancel, verifyFilter, verifySeat } = validate;
+const { verifyTrip, verifyGet, verifyBook, verifyDel, verifyCancel, verifyFilter, verifySeat } = validate;
 const {create, getTrips, book, getBookings, deleteBookings, cancelTrip, getFilterTrips, changeSeat } = trip;
 const { verifyAdmin, verifyToken } = Auth;
 
 
 tripRouter.route('/api/v1/trips').post(verifyAdmin, verifyTrip, create);
-tripRouter.route('/api/v1/trips').get(verifyToken, getTrips);
+tripRouter.route('/api/v1/trips').get(verifyToken, verifyGet, getTrips);
 tripRouter.route('/api/v1/bookings').post(verifyToken, verifyBook, book);
 tripRouter.route('/api/v1/bookings').get(verifyToken, getBookings);
 tripRouter.route('/api/v1/bookings/:booking_id').delete(verifyToken, verifyDel, deleteBookings);
