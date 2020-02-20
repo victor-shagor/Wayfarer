@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-plusplus */
 /* eslint-disable camelcase */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -12,6 +14,11 @@ if (process.env.NODE_ENV !== 'production') {
   baseUrl = process.env.SENDGRID_PRODUCTION__URL;
 }
 const Helper = {
+  Filter(array, array2) {
+    const array1 = array.map(res => res.trip_id);
+    const unMatched = array2.reduce((reducer, item) => ((array1.indexOf(item.id) !== -1) ? reducer : [...reducer, item]), []);
+    return unMatched;
+  },
   hashPassword(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
   },

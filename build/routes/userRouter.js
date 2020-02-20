@@ -22,8 +22,7 @@ var verifyInput = _userValidations["default"].verifyInput,
 var create = _users["default"].create,
     signin = _users["default"].signin,
     verifyEmail = _users["default"].verifyEmail;
-var verifyAdmin = _auth["default"].verifyAdmin,
-    verifyToken = _auth["default"].verifyToken;
+var verifyToken = _auth["default"].verifyToken;
 userRouter.route('/api/v1/auth/signup').post(verifyInput, create);
 userRouter.route('/api/v1/auth/signin').post(verifySignin, signin);
 userRouter.route('/api/v1/auth/verifyEmail').get(verifyToken, verifyEmail);
