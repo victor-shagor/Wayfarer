@@ -36,6 +36,8 @@ const createTables = `
    trip_date DATE,
    seat_number INT,
    first_name VARCHAR,
+   origin VARCHAR,
+   destination VARCHAR,
    last_name VARCHAR,
    email VARCHAR,
    status VARCHAR,

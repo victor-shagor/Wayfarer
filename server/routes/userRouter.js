@@ -9,7 +9,7 @@ const userRouter = express.Router();
 
 const { verifyInput, verifySignin } = validate;
 const { create, signin, verifyEmail } = User;
-const { verifyAdmin, verifyToken } = Auth;
+const { verifyToken } = Auth;
 
 
 userRouter.route('/api/v1/auth/signup').post(verifyInput, create);

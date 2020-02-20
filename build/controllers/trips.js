@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
+var _helper = _interopRequireDefault(require("../helpers/helper"));
+
 var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -35,41 +37,57 @@ var trip = {
         origin = _req$query.origin,
         destination = _req$query.destination;
 
-    if (origin && !destination) {
-      _config["default"].query('SELECT * FROM trips WHERE origin =$1', [origin], function (_error, results) {
-        return res.status(200).json({
-          status: 'success',
-          data: results.rows
-        });
-      });
-    }
+    var decoded = _jsonwebtoken["default"].decode(req.headers.token, {
+      complete: true
+    });
 
-    if (destination && !origin) {
-      _config["default"].query('SELECT * FROM trips WHERE destination =$1', [destination], function (_error, results) {
-        return res.status(200).json({
-          status: 'success',
-          data: results.rows
-        });
-      });
-    }
+    _config["default"].query('SELECT trip_id FROM bookings WHERE user_id =$1', [decoded.payload.user_id], function (error, result) {
+      console.log(result.rows);
 
-    if (destination && origin) {
-      _config["default"].query('SELECT * FROM trips WHERE destination =$1 AND origin=$2', [destination, origin], function (_error, resul) {
-        return res.status(200).json({
-          status: 'success',
-          data: resul.rows
-        });
-      });
-    }
+      if (origin && !destination) {
+        _config["default"].query('SELECT * FROM trips WHERE origin =$1', [origin], function (_error, results) {
+          var newTrips = _helper["default"].Filter(result.rows, results.rows);
 
-    if (!destination && !origin) {
-      _config["default"].query('SELECT * FROM trips', function (_error, results) {
-        return res.status(200).json({
-          status: 'success',
-          data: results.rows
+          return res.status(200).json({
+            status: 'success',
+            data: newTrips
+          });
         });
-      });
-    }
+      }
+
+      if (destination && !origin) {
+        _config["default"].query('SELECT * FROM trips WHERE destination =$1', [destination], function (_error, results) {
+          var newTrips = _helper["default"].Filter(result.rows, results.rows);
+
+          res.status(200).json({
+            status: 'success',
+            data: newTrips
+          });
+        });
+      }
+
+      if (destination && origin) {
+        _config["default"].query('SELECT * FROM trips WHERE destination =$1 AND origin=$2', [destination, origin], function (_error, resul) {
+          var newTrips = _helper["default"].Filter(result.rows, resul.rows);
+
+          res.status(200).json({
+            status: 'success',
+            data: newTrips
+          });
+        });
+      }
+
+      if (!destination && !origin) {
+        _config["default"].query('SELECT * FROM trips', function (_error, results) {
+          var newTrips = _helper["default"].Filter(result.rows, results.rows);
+
+          res.status(200).json({
+            status: 'success',
+            data: newTrips
+          });
+        });
+      }
+    });
   },
   book: function book(req, res) {
     var decoded = _jsonwebtoken["default"].decode(req.headers.token, {
@@ -80,10 +98,12 @@ var trip = {
     var trip_id = req.body.trip_id;
     var user_id = decoded.payload.user_id;
 
-    _config["default"].query('SELECT id, bus_id, trip_date FROM trips WHERE id =$1', [trip_id], function (_err, results) {
+    _config["default"].query('SELECT id, bus_id, trip_date, destination, origin FROM trips WHERE id =$1', [trip_id], function (_err, results) {
       var _results$rows$ = results.rows[0],
           bus_id = _results$rows$.bus_id,
-          trip_date = _results$rows$.trip_date;
+          trip_date = _results$rows$.trip_date,
+          destination = _results$rows$.destination,
+          origin = _results$rows$.origin;
 
       _config["default"].query('SELECT * FROM users WHERE user_id =$1', [user_id], function (_errr, user) {
         var _user$rows$ = user.rows[0],
@@ -94,7 +114,7 @@ var trip = {
         _config["default"].query('SELECT seat_number FROM bookings WHERE trip_id =$1', [trip_id], function (_errr, seat) {
           var seat_number = seat.rows.length + 1;
 
-          _config["default"].query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', created_on], function (_error, result) {
+          _config["default"].query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, origin, destination, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *', [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', origin, destination, created_on], function (_error, result) {
             return res.status(201).json({
               status: 'success',
               data: result.rows[0]
@@ -109,20 +129,80 @@ var trip = {
       complete: true
     });
 
-    if (decoded.payload.is_admin === true) {
-      _config["default"].query('SELECT * FROM bookings', function (_error, results) {
-        return res.status(200).json({
-          status: 'success',
-          data: results.rows
+    var _req$query2 = req.query,
+        origin = _req$query2.origin,
+        destination = _req$query2.destination;
+
+    if (origin && !destination) {
+      if (decoded.payload.is_admin === true) {
+        _config["default"].query('SELECT * FROM bookings WHERE origin=$1', [origin], function (_error, results) {
+          return res.status(200).json({
+            status: 'success',
+            data: results.rows
+          });
         });
-      });
-    } else {
-      _config["default"].query('SELECT * FROM bookings WHERE user_id =$1', [decoded.payload.user_id], function (_error, results) {
-        return res.status(200).json({
-          status: 'success',
-          data: results.rows
+      } else {
+        _config["default"].query('SELECT * FROM bookings WHERE user_id=$1 AND origin =$2', [decoded.payload.user_id, origin], function (_error, results) {
+          return res.status(200).json({
+            status: 'success',
+            data: results.rows
+          });
         });
-      });
+      }
+    }
+
+    if (destination && !origin) {
+      if (decoded.payload.is_admin === true) {
+        _config["default"].query('SELECT * FROM bookings WHERE destination =$1', [destination], function (_error, results) {
+          return res.status(200).json({
+            status: 'success',
+            data: results.rows
+          });
+        });
+      } else {
+        _config["default"].query('SELECT * FROM bookings WHERE user_id=$1 AND destination =$2', [decoded.payload.user_id, destination], function (_error, results) {
+          return res.status(200).json({
+            status: 'success',
+            data: results.rows
+          });
+        });
+      }
+    }
+
+    if (destination && origin) {
+      if (decoded.payload.is_admin === true) {
+        _config["default"].query('SELECT * FROM bookings WHERE destination =$1 AND origin=$2', [destination, origin], function (_error, results) {
+          return res.status(200).json({
+            status: 'success',
+            data: results.rows
+          });
+        });
+      } else {
+        _config["default"].query('SELECT * FROM bookings WHERE user_id=$1 AND destination =$2 AND origin=$3', [decoded.payload.user_id, destination, origin], function (_error, resul) {
+          return res.status(200).json({
+            status: 'success',
+            data: resul.rows
+          });
+        });
+      }
+    }
+
+    if (!destination && !origin) {
+      if (decoded.payload.is_admin === true) {
+        _config["default"].query('SELECT * FROM bookings', function (_error, results) {
+          return res.status(200).json({
+            status: 'success',
+            data: results.rows
+          });
+        });
+      } else {
+        _config["default"].query('SELECT * FROM bookings WHERE user_id =$1', [decoded.payload.user_id], function (_error, results) {
+          return res.status(200).json({
+            status: 'success',
+            data: results.rows
+          });
+        });
+      }
     }
   },
   deleteBookings: function deleteBookings(req, res) {
