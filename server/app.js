@@ -17,11 +17,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../clients/build')));
-  app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../clients/build', 'index.html')));
 }
 app.use('/', userRouter);
 app.use('/', tripRouter);
 app.get('/', (req, res) => res.status(200).send({ message: 'Welcome to bus-connect' }));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../clients/build', 'index.html')));
 
 
 const port = process.env.PORT || 3001;
