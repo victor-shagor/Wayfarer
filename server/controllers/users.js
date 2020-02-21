@@ -12,7 +12,7 @@ const User = {
     pool.query('SELECT * FROM users WHERE email = $1 ', [email], (error, result) => {
       if (result.rows[0]) {
         if (result.rows[0].is_verified === false) {
-          const token = Helper.generateToken(result.rows[0].user_id, result.rows[0].email, result.rows[0].is_admin);
+          const token = Helper.generateToken(result.rows[0].user_id, result.rows[0].email, result.rows[0].is_admin, result.rows[0].first_name);
           Helper.generateAuthEmail(result.rows[0].email, result.rows[0].first_name, token);
           return res.status(201).json({
             status: 201,
@@ -49,7 +49,7 @@ const User = {
       const {
         user_id, is_admin, first_name, last_name,
       } = results.rows[0];
-      const token = Helper.generateToken(user_id, email, is_admin);
+      const token = Helper.generateToken(user_id, email, is_admin, first_name);
       const data = {
         user_id,
         is_admin,

@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import helper from '../helpers/helper';
 
 import pool from '../config';
+import Helper from '../helpers/helper';
 
 const trip = {
   create(req, res) {
@@ -77,12 +78,12 @@ const trip = {
 
         pool.query('SELECT seat_number FROM bookings WHERE trip_id =$1', [trip_id], (_errr, seat) => {
           const seat_number = seat.rows.length + 1;
-
           pool.query('INSERT INTO bookings (trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, status, origin, destination, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *',
             [trip_id, user_id, bus_id, trip_date, seat_number, first_name, last_name, email, 'active', origin, destination, created_on], (_error, result) => res.status(201).json({
               status: 'success',
               data: result.rows[0],
             }));
+          Helper.generateNotification(decoded.payload.email, decoded.payload.first_name);
         });
       });
     });
