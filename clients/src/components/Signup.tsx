@@ -49,6 +49,9 @@ const Signup = () => {
             catch(err){
                 console.log(err)
             }
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
 
     }
   return (

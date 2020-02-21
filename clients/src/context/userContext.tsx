@@ -45,6 +45,9 @@ const handleSubmit = async (data:Obj) => {
                 console.log(error);
                 
             }
+      setTimeout(() => {
+        setError("");
+      }, 3000);
              
 }
 
