@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.27a4d0f5.chunk.css",
+    "main.js": "/static/js/main.434f30fd.chunk.js",
+    "main.js.map": "/static/js/main.434f30fd.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.107bb8ca.js",
+    "runtime-main.js.map": "/static/js/runtime-main.107bb8ca.js.map",
+    "static/css/2.0252c3bb.chunk.css": "/static/css/2.0252c3bb.chunk.css",
+    "static/js/2.b008f54b.chunk.js": "/static/js/2.b008f54b.chunk.js",
+    "static/js/2.b008f54b.chunk.js.map": "/static/js/2.b008f54b.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.dab1017f9463bfa7b306cec48b527ee6.js": "/precache-manifest.dab1017f9463bfa7b306cec48b527ee6.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.0252c3bb.chunk.css.map": "/static/css/2.0252c3bb.chunk.css.map",
+    "static/css/main.27a4d0f5.chunk.css.map": "/static/css/main.27a4d0f5.chunk.css.map",
+    "static/js/2.b008f54b.chunk.js.LICENSE.txt": "/static/js/2.b008f54b.chunk.js.LICENSE.txt",
+    "static/media/semantic.min.css": "/static/media/outline-icons.ef60a4f6.woff",
+    "static/media/bus1.jpg": "/static/media/bus1.7bcdb25d.jpg",
+    "static/media/travel_booking.png": "/static/media/travel_booking.241ac358.png",
+    "static/media/travelers.png": "/static/media/travelers.9d207299.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.107bb8ca.js",
+    "static/css/2.0252c3bb.chunk.css",
+    "static/js/2.b008f54b.chunk.js",
+    "static/css/main.27a4d0f5.chunk.css",
+    "static/js/main.434f30fd.chunk.js"
+  ]
+}
