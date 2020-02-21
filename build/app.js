@@ -33,16 +33,20 @@ app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded({
   extended: false
 }));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(_express["default"]["static"](_path["default"].join(__dirname, '../clients/build')));
+  app.get('*', function (req, res) {
+    return res.sendFile(_path["default"].join(__dirname, '../clients/build', 'index.html'));
+  });
+}
+
 app.use('/', _userRouter["default"]);
 app.use('/', _tripRouter["default"]);
 app.get('/', function (req, res) {
   return res.status(200).send({
     message: 'Welcome to bus-connect'
   });
-});
-app.use(_express["default"]["static"](_path["default"].join(__dirname, '../clients/build')));
-app.get('*', function (req, res) {
-  return res.sendFile(_path["default"].join(__dirname, '../clients/build', 'index.html'));
 });
 var port = process.env.PORT || 3001;
 app.listen(port, function () {
