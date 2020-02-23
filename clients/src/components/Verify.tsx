@@ -34,7 +34,7 @@ const [message, setMessage] = useState(`Email verified, kindly proceed to`)
     return (
         <div className="message">
             <p style={message ? {display:"block", marginLeft: "35vw", marginTop: "20vh"}:{display: "none"}}>{message} <Link to='/login'>login</Link></p> 
-            <p style={message ? {display:"none"}:{ display:"block", marginLeft: "35vw", marginTop: "20vh"}}>Link expired kindly procced to <Link to='/login'>Signup</Link></p> 
+            <p style={message ? {display:"none"}:{ display:"block", marginLeft: "35vw", marginTop: "20vh"}}>Link expired kindly procced to <Link to='/signin'>Website</Link></p> 
         </div>
     );
 };

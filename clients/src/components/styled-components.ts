@@ -2,12 +2,39 @@ import styled from "styled-components";
 import bookings from "../connect-assests/travel_booking.png";
 import signpics from "../connect-assests/bus1.jpg";
 
-
 export const Nav = styled.div`
-height:8vh;
-background-color: #00bfa6;
-color: white;
-h3 {
+  height: 7vh;
+  background-color: #00bfa6;
+  color: white;
+  .container {
+    display: none;
+    cursor: pointer;
+    margin-top: 30px;
+  }
+  
+  .bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+  
+  .change{
+    margin-top: 30px;
+  }
+  .change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+  }
+  
+  .change .bar2 {opacity: 0;}
+  
+  .change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+  }
+  h3 {
     font-size: 30px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -23,7 +50,7 @@ h3 {
     list-style: none;
     padding-top: 40px;
     padding-bottom: 40px;
-    margin-left: 880px;
+    margin-left: 70vw;
   }
 
   li a {
@@ -45,28 +72,76 @@ h3 {
     height: 40px;
     color: white;
   }
-`
+  @media screen and (max-width: 426px) {
+    ul{
+      display: none;
+    }
+    .container{
+      display: inline-block;
+      margin-left: 80vw;
+      margin-top: 30px;
+    }
+    .change{
+      display: inline-block;
+      margin-left: 80vw;
+      margin-top: 30px;
+    }
+    h3{
+      margin-left: 1vw;
+    }
+    height: 8vh;
+  }
+`;
 
-export const NavDiv = styled.div<{marginTop?: string}>`
+export const NavDiv = styled.div<{ marginTop?: string }>`
   background: url(${bookings});
   background-repeat: no-repeat;
   background-position: right -50px top -34px;
   background-size: 1000px;
   height: 60vh;
+
+  .container {
+    display: none;
+    cursor: pointer;
+    margin-top: 30px;
+  }
+  
+  .bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #00bfa6;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+  
+  .change{
+    margin-top: 30px;
+  }
+  .change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+  }
+  
+  .change .bar2 {opacity: 0;}
+  
+  .change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+  }
   h3 {
     font-size: 30px;
     margin-top: 20px;
-    margin-left: 15vh;
+    margin-left: 20vh;
   }
   .nav {
     display: flex;
-    margin-top: ${({marginTop})=> marginTop};
+    margin-top: ${({ marginTop }) => marginTop};
   }
   ul {
     float: right;
     display: flex;
     list-style: none;
-    margin-left: 880px;
+    margin-left: 70vw;
   }
 
   li a {
@@ -129,12 +204,53 @@ export const NavDiv = styled.div<{marginTop?: string}>`
     color: #00bfa6;
     border: 1px solid #00bfa6;
   }
+  @media screen and (max-width: 426px) {
+    background: url();
+    .middle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      margin-left: 0px;
+    }
+    .container{
+      display: inline-block;
+      margin-left: 85vw;
+      margin-top: 0px;
+    }
+    .change{
+      display: inline-block;
+      margin-left: 85vw;
+      margin-top: 0px;
+    }
+    h3{
+      margin-left: 2vw;
+    }
+    ul {
+      margin-left: 90vw;
+      margin-top: 15px;
+      display: none;
+    }
+    .middle .h1 {
+      font-size: 30px;
+    }
+    .middle .h2 {
+      font-size: 20px;
+    }
+    .middle .p {
+      font-size: 15px;
+    }
+  }
 `;
 
 export const SectionDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   .section2 {
     display: flex;
-    margin-left: 20vh;
     margin-top: 86px;
     margin-bottom: 30px;
   }
@@ -196,6 +312,25 @@ export const SectionDiv = styled.div`
   img {
     margin-top: 20px;
   }
+  @media screen and (max-width: 426px) {
+    width: 100vw;
+    .section2 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      width: 100vw;
+    }
+    .section2 .back1 {
+      margin-right: 0px;
+      margin-bottom: 10px
+    }
+    .section2 .back2 {
+      margin-right: 0px;
+      margin-bottom: 10px
+    }
+  }
 `;
 export const Services = styled.div`
   text-align: center;
@@ -212,6 +347,11 @@ export const Services = styled.div`
   .services .h2 {
     font-weight: bold;
     font-family: "Open Sans", sans-serif;
+  }
+  @media screen and (max-width: 426px) {
+  margin-top: 2vh;
+  margin-bottom: 5px;
+  width: 100vw;
   }
 `;
 export const Section1Div = styled.div`
@@ -249,17 +389,46 @@ export const Section1Div = styled.div`
     color: #00bfa6;
     border: 1px solid #00bfa6;
   }
+  @media screen and (max-width: 426px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 50px;
+      .img1{
+        display:none;
+      }
+      .img2 {
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 0px;
+      padding:10px;
+      }
+      .top{
+        font-size: 30px;
+      }
+  }
+  
 `;
 
 export const FooterDiv = styled.div`
   display: flex;
-  height: 30vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
   background-color: #00bfa6;
-  color: white;
-
+  height: 25vh;
+  bottom: 0px;
+  .footer {
+    display: flex;
+    color: white;
+  }
   .secti1 {
     margin-top: 5vh;
-    margin-left: 280px;
     margin-right: 150px;
   }
   .secti2 {
@@ -282,21 +451,53 @@ export const FooterDiv = styled.div`
   img:hover {
     transform: scale(1.1);
   }
-`;
-export const SignDiv = styled.div<{ cardHeight?: string, cardWidth?: string}>`
-  height: 92vh;
-  background: url(${signpics});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-h3{
-    margin-bottom: 20px;
+  @media screen and (max-width: 426px) {
+    .footer{
+    grid-gap: 0px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: 50px;
+  }
+  h2{
+    font-size: 20px;
+  }
+    height: 59vh;
+    width: 100vw;
+    .secti1 {
+      margin-right: 10px;
+    }
+    .secti2 {
+      margin-right: 10px;
+    }
+    .secti3 {
+      margin-right: 10px;
+    }
+    .secti4 {
+      margin-right: 50px;
+    }
 }
-  .card{
+`;
+export const Sign = styled.div<{ cardHeight?: string; cardWidth?: string }>`
+height: 100vh;
+background: url(${signpics});
+background-repeat: no-repeat;
+background-position: center;
+background-size: cover;
+overflow: hidden;
+@media screen and (max-width: 426px) {
+  background: url();
+}
+`
+export const SignDiv = styled.div<{ cardHeight?: string; cardWidth?: string }>`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+  h3 {
+    margin-bottom: 20px;
+  }
+  .card {
+    margin-top: 10vh;
     background-color: white;
     height: ${({ cardHeight }) => cardHeight};
     width: ${({ cardWidth }) => cardWidth};
@@ -306,39 +507,44 @@ h3{
     justify-content: center;
     align-items: center;
     opacity: 0.9;
-}
-input{
+  }
+  input {
     height: 45px;
     width: 250px;
     border-radius: 10px;
     border: #00bfa6 1px solid;
     margin-top: 10px;
-}
-input:focus{
+  }
+  input:focus {
     border-radius: 10px;
     border: #00bfa6 1px solid;
-}
-.fir{
-margin-bottom: 20px;
-}
-.button{
+  }
+  .fir {
+    margin-bottom: 20px;
+  }
+  .button {
     background-color: #00bfa6;
     color: white;
-}
-.button:hover{
+  }
+  .button:hover {
     background-color: white;
-    color:  #00bfa6;
-}
+    color: #00bfa6;
+  }
+  @media screen and (max-width: 426px) {
+    .card {
+      margin-top: 0vh;
+    } 
+  }
 `;
 SignDiv.defaultProps = {
-    cardHeight: '600px',
-    cardWidth: '400px'
-  };
+  cardHeight: "600px",
+  cardWidth: "400px"
+};
 
-  export const DashDiv = styled.div`
+export const DashDiv = styled.div`
   .section2 {
     grid-gap: 0px;
-    display:grid;
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin-left: 25vw;
     margin-top: 86px;
@@ -401,9 +607,44 @@ SignDiv.defaultProps = {
   .header {
     font-weight: 800;
   }
+  @media screen and (max-width: 426px) {
+    .section2 {
+      display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 35vw;
+    } 
+    .section2 .back1 {
+      height: 160px;
+      width: 230px;
+    }
+    .section2 .back2 {
+      height: 170px;
+      width: 230px;
+    }
+    .section2 .back3 {
+      height: 170px;
+      width: 230px;
+      margin-bottom: 20px;
+    }
+  }
 `;
 
-export const TabDiv = styled.div`
-margin-left: 10vw;
-margin-right: 5vw
+export const Name = styled.div`
+margin-top:20px;
+margin-left:90vw;
+color:#00bfa6;
+@media screen and (max-width: 426px) {
+  margin-left:68vw;
+}
+
 `
+
+export const TabDiv = styled.div`
+  margin-left: 10vw;
+  margin-right: 5vw;
+  @media screen and (max-width: 426px) {
+    margin-left:40vw;
+  }
+`;

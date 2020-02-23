@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Menu, Sidebar } from 'semantic-ui-react';
-import { DashDiv } from './styled-components';
+import { DashDiv, Name } from './styled-components';
 import { Link, useHistory } from 'react-router-dom';
 
 export const SideNav = () => {
@@ -8,9 +8,9 @@ export const SideNav = () => {
  const history = useHistory()
   return (
       <>
-      <div style={{marginTop:"20px",marginLeft:"90vw",color:"#00bfa6"}}>
+      <Name>
          Welcome {name} 
-    </div>
+    </Name>
       <Sidebar
         as={Menu}
         animation='overlay'
@@ -62,9 +62,9 @@ if(!localStorage.token){
 
   return (
       <>
-      <div style={{marginTop:"20px",marginLeft:"90vw",color:"#00bfa6"}}>
+      <Name>
          Welcome {name} 
-    </div>
+        </Name>
       <Sidebar
         as={Menu}
         animation='overlay'

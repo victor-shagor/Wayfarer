@@ -1,6 +1,6 @@
 import React,{useState, useContext} from "react";
 import Navbar from "./Navbar";
-import { SignDiv, Nav } from "./styled-components";
+import { SignDiv, Nav, Sign } from "./styled-components";
 import { useHistory} from 'react-router-dom'
 import {UserContext} from '../context/userContext'
 
@@ -26,7 +26,7 @@ const Login = () => {
     }
     
   return (
-    <>
+    <Sign>
       <Nav>
         <Navbar />
       </Nav>
@@ -46,7 +46,7 @@ const Login = () => {
           </form>
         </div>
       </SignDiv>
-    </>
+    </Sign>
   );
 };
 

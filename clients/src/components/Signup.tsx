@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import Navbar from "./Navbar";
-import { SignDiv, Nav } from "./styled-components";
+import { Sign, SignDiv, Nav } from "./styled-components";
 import { useHistory} from 'react-router-dom'
 
 const Signup = () => {
@@ -55,7 +55,7 @@ const Signup = () => {
 
     }
   return (
-    <>
+    <Sign>
       <Nav>
         <Navbar />
       </Nav>
@@ -83,8 +83,12 @@ const Signup = () => {
           </form>
         </div>
       </SignDiv>
-    </>
+      </Sign>
   );
 };
 
 export default Signup;
+
+
+
+

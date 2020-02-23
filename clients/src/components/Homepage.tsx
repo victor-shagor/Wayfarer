@@ -58,6 +58,7 @@ const Homepage = () => {
 </div>
 </Section1Div>
 <FooterDiv>
+    <div className='footer'>
         <div className="secti1">
             <img src="./images/digisol-blue.svg" alt="Bus-Connect"></img>
             <p>mg.bus-connect.me <br></br> +234-813-937-1140</p>
@@ -78,6 +79,7 @@ const Homepage = () => {
                 <img src={insta} className="ist"></img>
                 <img src={twitter} className="second"></img>
             </div>
+        </div>
         </div>
         </FooterDiv>
      </>
