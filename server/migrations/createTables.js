@@ -8,6 +8,7 @@ const createTables = `
    first_name VARCHAR(20),
    last_name VARCHAR(20),
    password VARCHAR,
+   google_id VARCHAR,
    is_verified BOOLEAN,
    is_admin BOOLEAN
   );
@@ -25,6 +26,7 @@ const createTables = `
    origin VARCHAR,
    destination VARCHAR,
    trip_date DATE,
+   trip_time VARCHAR,
    fare FLOAT,
    status VARCHAR
   );
@@ -34,6 +36,7 @@ const createTables = `
    user_id INT,
    bus_id INT,
    trip_date DATE,
+   trip_time VARCHAR,
    seat_number INT,
    first_name VARCHAR,
    origin VARCHAR,
@@ -43,6 +46,13 @@ const createTables = `
    status VARCHAR,
    created_on TIMESTAMP
   );
+  CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    user_id INT,
+    is_read BOOLEAN,
+    message VARCHAR,
+    created_on TIMESTAMP
+   );
 `;
 const createDatabaseTables = async () => {
   await pool.query(createTables).then(() => {

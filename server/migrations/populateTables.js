@@ -18,11 +18,11 @@ INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY
 INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380C','Honda','DL360', 2016, 20);
 INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380D','Honda','DL360', 2016, 20);
 INSERT INTO bus (number_plate, manufacturer, model, year, capacity) VALUES ('EKY380E','Honda','DL360', 2016, 20);
-INSERT INTO trips (bus_id, origin, destination, trip_date, fare, status) VALUES (1,'lagos','abuja', '07/12/2020', 5000, 'active');
-INSERT INTO trips (bus_id, origin, destination, trip_date, fare, status) VALUES (2,'lagos','abuja', '07/12/2020', 5000, 'active');
-INSERT INTO trips (bus_id, origin, destination, trip_date, fare, status) VALUES (3,'abuja','kaduna', '07/12/2020', 5000, 'active');
-INSERT INTO trips (bus_id, origin, destination, trip_date, fare, status) VALUES (4,'abuja','lagos', '07/12/2020', 5000, 'active');
-INSERT INTO trips (bus_id, origin, destination, trip_date, fare, status) VALUES (5,'kaduna','ibadan', '07/12/2020', 5000, 'active');
+INSERT INTO trips (bus_id, origin, destination, trip_date, trip_time, fare, status) VALUES (1,'lagos','abuja', '07/12/2020', '12:00', 5000, 'active');
+INSERT INTO trips (bus_id, origin, destination, trip_date, trip_time, fare, status) VALUES (2,'lagos','abuja', '07/12/2020', '14:00', 5000, 'active');
+INSERT INTO trips (bus_id, origin, destination, trip_date, trip_time, fare, status) VALUES (3,'abuja','kaduna', '07/12/2020', '15:00', 5000, 'active');
+INSERT INTO trips (bus_id, origin, destination, trip_date, trip_time, fare, status) VALUES (4,'abuja','lagos', '07/12/2020',  '12:00', 5000, 'active');
+INSERT INTO trips (bus_id, origin, destination, trip_date, trip_time, fare, status) VALUES (5,'kaduna','ibadan', '07/12/2020', '17:00', 5000, 'active');
 `;
 
 const seedDatabase = async () => {

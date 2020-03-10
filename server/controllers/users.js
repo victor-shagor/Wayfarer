@@ -87,5 +87,96 @@ const User = {
       });
     });
   },
+  googleLogin(req, res) {
+    const { email, first_name, last_name, google_id } = req.body;
+    const is_admin = false;
+    pool.query('SELECT * FROM users WHERE email = $1 ', [email], (error, exist) => {
+      if(exist.rows[0]){
+        if(!exist.rows[0].google_id){
+      return res.status(400).json({
+        status: 400,
+        error: "User already exist"
+      });
+    }
+      if (exist.rows[0].google_id) {
+          const token = Helper.generateToken(exist.rows[0].user_id, exist.rows[0].email, exist.rows[0].is_admin, exist.rows[0].first_name);
+          const data = {
+            user_id: exist.rows[0].user_id,
+            is_admin,
+            token,
+            email,
+            first_name,
+            last_name,
+          };
+          return res.status(200).json({
+            status: 200,
+            data,
+          });
+      }
+  }
+  
+  pool.query('INSERT INTO users (first_name, last_name, email,google_id, is_admin, is_verified) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id',
+  [first_name, last_name, email, google_id, is_admin, false], (error, results) => {
+    const { user_id } = results.rows[0];
+    const data = {
+      user_id,
+      is_admin,
+      token: Helper.generateToken(user_id, email, is_admin),
+      email,
+      first_name,
+      last_name,
+    };
+    res.status(200).json({
+      status: 200,
+        data,
+      });
+  });   
+  })
+  },
+  facebookLogin(req, res) {
+    const { email, first_name, last_name, facebook_id } = req.body;
+    const is_admin = false;
+    pool.query('SELECT * FROM users WHERE email = $1 ', [email], (error, exist) => {
+      if(exist){
+      return res.status(400).json({
+        status: 400,
+        error: "User already exist"
+      });
+    }
+    })
+    pool.query('SELECT * FROM users WHERE facebook_id = $1 ', [facebook_id], (error, result) => {
+      if (result.rows[0]) {
+          const token = Helper.generateToken(result.rows[0].user_id, result.rows[0].email, result.rows[0].is_admin, result.rows[0].first_name);
+          const data = {
+            user_id: result.rows[0].user_id,
+            is_admin,
+            token,
+            email,
+            first_name,
+            last_name,
+          };
+          return res.status(200).json({
+            status: 200,
+            data,
+          });
+      }
+    });
+    pool.query('INSERT INTO users (first_name, last_name, email,facebook_id, is_admin, is_verified) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id',
+      [first_name, last_name, email, facebook_id, is_admin, false], (error, results) => {
+        const { user_id } = results.rows[0];
+        const data = {
+          user_id,
+          is_admin,
+          token: Helper.generateToken(user_id, email, is_admin),
+          email,
+          first_name,
+          last_name,
+        };
+        res.status(200).json({
+          status: 200,
+            data,
+          });
+      });
+  },
 };
 export default User;

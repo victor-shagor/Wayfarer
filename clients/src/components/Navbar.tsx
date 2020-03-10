@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Header, Icon, Image, Menu, Segment, Sidebar } from "semantic-ui-react";
+import { Icon, Menu, Sidebar } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -26,7 +26,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <a id="nav">BLOG</a>
+            <Link to="" id="nav">BLOG</Link>
           </li>
         </ul>
         

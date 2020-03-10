@@ -35,6 +35,8 @@ const handleSubmit = async (data:Obj) => {
                     if(res.status === 200){
                         localStorage.setItem("token", res.data.token)
                         localStorage.setItem("first_name", res.data.first_name)
+                        localStorage.setItem("id", res.data.user_id)
+                        localStorage.setItem("is_admin", res.data.is_admin)
                         setToken(localStorage.token)
                         setFirst_name(res.data.first_name)
                     }

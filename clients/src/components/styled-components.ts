@@ -483,7 +483,6 @@ background: url(${signpics});
 background-repeat: no-repeat;
 background-position: center;
 background-size: cover;
-overflow: hidden;
 @media screen and (max-width: 426px) {
   background: url();
 }
@@ -537,7 +536,7 @@ align-items: center;
   }
 `;
 SignDiv.defaultProps = {
-  cardHeight: "600px",
+  cardHeight: "640px",
   cardWidth: "400px"
 };
 
@@ -644,6 +643,26 @@ color:#00bfa6;
 export const TabDiv = styled.div`
   margin-left: 10vw;
   margin-right: 5vw;
+  margin-bottom: 5vw;
+  .form{
+    margin-left: 35%;
+    h3{
+      margin-left: 16%
+    }
+    .button {
+     cursor:pointer;
+      padding: 10px;
+      border-radius: 10%;
+      border: none;
+      background-color: #00bfa6;
+      color: white;
+      margin-left: 18%
+    }
+    .button:hover {
+      background-color: white;
+      color: #00bfa6;
+    }
+  }
   @media screen and (max-width: 426px) {
     margin-left:40vw;
   }

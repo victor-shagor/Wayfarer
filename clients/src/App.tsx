@@ -1,12 +1,14 @@
 import React from "react";
 import Homepage from "./components/Homepage";
 import Signup from "./components/Signup";
-import Signin from "./components/Login";
+import Signin from "./components/Login/Login";
 import Trips from './components/Trips';
-import Bookings from './components/Bookings';
+import Bookings from './components/Bookings/Bookings';
 import Emailverify from "./components/Verify";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Dashboard from './components/Dashboard';
+import AdminDashboard from './components/admin/dashboard';
+import AdminTrips from './components/admin/trip';
 import UserContextProvider from './context/userContext';
 import TripContextProvider from './context/TripContext';
 
@@ -37,6 +39,12 @@ function App() {
           </Route>
           <Route path="/bookings">
             <Bookings />
+          </Route>
+          <Route path="/admin/dashboard">
+            <AdminDashboard />
+          </Route>
+          <Route path="/admin/trips">
+            <AdminTrips />
           </Route>
           <Route path="/accomodations">
           <h1>Accomodations not available, kindly book trips for now</h1>

@@ -4,6 +4,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import {io} from '../app'
 
 dotenv.config();
 let baseUrl = '';
@@ -123,7 +124,22 @@ const Helper = {
     };
     return Helper.emailSender(details);
   },
-
 };
 
+export const userNotifacation = (req, user, destination) => {
+  const message = `Hello ${user.first_name}, your trip to ${destination} was book successfully`;
+  const isEmitted = req.io.emit(user.user_id, message);
+  
+  
+  if (isEmitted) return true;
+  return false;
+}
+export const cancelNotifacation = (req, user, destination) => {
+  const message = `Hello, your trip to ${destination} was cancelled sorry for the inconviniencies`;
+  const isEmitted = req.io.emit(user.user_id, message);
+  
+  
+  if (isEmitted) return true;
+  return false;
+}
 export default Helper;

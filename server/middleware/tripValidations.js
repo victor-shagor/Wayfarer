@@ -10,7 +10,7 @@ import pool from '../config';
 const validateTrip = {
   verifyTrip(req, res, next) {
     const {
-      bus_id, trip_date, fare, origin, destination,
+      bus_id, trip_date, fare, origin, destination, trip_time
     } = req.body;
 
     const requiredFields = ['bus_id', 'origin', 'destination', 'trip_date', 'fare'];
@@ -46,6 +46,13 @@ const validateTrip = {
         error: 'Trip_date cannot be in the past',
       });
     }
+    if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(trip_time)) {
+      return res.status(403).json({
+        status: 'error',
+        error: 'Trip_time can only be in HH:MM format',
+      });
+    }
+    
     if (!/^\d*\.?\d*$/.test(fare) || !Helper.isValidNumber(bus_id) || fare < 1) {
       return res.status(400).json({
         status: 'error',
